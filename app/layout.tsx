@@ -7,8 +7,11 @@ import { Footer } from "@/components/footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Solana Web3.js v2",
-  metadataBase: new URL("https://solana-web3js-v2.vercel.app/"),
+  title: {
+    default: "Solana Web3.js v2 Demo",
+    template: "%s | Solana Web3.js v2 Demo",
+  },
+  metadataBase: new URL("https://solana-web3-v2-demo.vercel.app/"),
   description:
     "Solana Web3.js v2 is a JavaScript library for interacting with the Solana blockchain.It provides a simple and efficient way to interact with the Solana network, including reading and writing to the blockchain, managing accounts, and interacting with smart contracts.",
 };
