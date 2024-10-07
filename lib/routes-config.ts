@@ -57,7 +57,8 @@ export const ROUTES: EachRoute[] = [
     ],
   },
   {
-    title: "Tokens", href: "/tokens",
+    title: "Tokens",
+    href: "/tokens",
     items: [
       {
         title: "Create Token",
@@ -76,7 +77,7 @@ export const ROUTES: EachRoute[] = [
         title: "Get Token Account",
         href: "/get-token-account",
       },
-      , {
+      {
         title: "Set Token Authority",
         href: "/set-token-authority",
       },
