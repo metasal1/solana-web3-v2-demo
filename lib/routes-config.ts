@@ -11,16 +11,17 @@ export const ROUTES: EachRoute[] = [
   {
     title: "Get Started", href: "/get-started",
     noLink: true,
+  },
+  {
+    title: "Installation",
+    href: "/installation",
+    noLink: true,
     items: [
-      {
-        title: "Installation",
-        href: "/installation",
-        noLink: true,
-        items: [
-          { title: "Node", href: "/node" },
-          { title: "CLI", href: "/cli" },
-        ],
-      }],
+      { title: "Node", href: "/node" },
+      { title: "CLI", href: "/cli" },
+      { title: "Anchor", href: "/anchor" },
+      { title: "Rust", href: "/rust" },
+    ],
   },
   {
     title: "Basics", href: "/basics",
@@ -29,7 +30,8 @@ export const ROUTES: EachRoute[] = [
       {
         title: "Create Keypair",
         href: "/create-keypair",
-      }, {
+      },
+      {
         title: "Set RPC",
         href: "/set-rpc",
       },
