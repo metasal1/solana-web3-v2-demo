@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { CommandIcon, HeartIcon, TriangleIcon } from "lucide-react";
+import { CodeIcon, HeartIcon, TriangleIcon, MessageCircleIcon } from "lucide-react";
 
 export function Footer() {
   return (
@@ -22,20 +22,28 @@ export function FooterButtons() {
   return (
     <>
       <Link
-        href="https://metasal.xyz"
+        href="https://t.me/solanaweb3js"
         target="_blank"
         className={buttonVariants({ variant: "outline", size: "sm" })}
       >
-        <TriangleIcon className="h-[0.8rem] w-4 mr-2 text-primary fill-current" />
-        Metasal
+        <MessageCircleIcon className="h-4 w-4 mr-2 text-blue-500 fill-current" />
+        Telegram Channel
       </Link>
       <Link
-        href="https://github.com/metasal1/solana-web3-v2-demo"
+        href="https://github.com/solana-labs/solana-web3.js"
         target="_blank"
         className={buttonVariants({ variant: "outline", size: "sm" })}
       >
         <HeartIcon className="h-4 w-4 mr-2 text-red-600 fill-current" />
         Solana Web3.js
+      </Link>
+      <Link
+        href="https://metasal.xyz"
+        target="_blank"
+        className={buttonVariants({ variant: "outline", size: "sm" })}
+      >
+        <CodeIcon className="h-4 w-4 mr-2 text-green-600 fill-current" />
+        Made by Metasal
       </Link>
     </>
   );
