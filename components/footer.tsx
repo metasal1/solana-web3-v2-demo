@@ -30,7 +30,7 @@ export function FooterButtons() {
         Metasal
       </Link>
       <Link
-        href="https://github.com/solana-labs/solana-web3.js/"
+        href="https://github.com/metasal1/solana-web3-v2-demo"
         target="_blank"
         className={buttonVariants({ variant: "outline", size: "sm" })}
       >

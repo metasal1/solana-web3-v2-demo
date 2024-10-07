@@ -63,7 +63,12 @@ export const ROUTES: EachRoute[] = [
       {
         title: "Mint Token",
         href: "/mint-token",
-      }, {
+      },
+      {
+        title: "Get Token",
+        href: "/get-Token",
+      },
+      {
         title: "Get Token Balance",
         href: "/get-token-balance",
       }, {

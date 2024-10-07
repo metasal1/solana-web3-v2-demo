@@ -1,0 +1,18 @@
+---
+title: Get Token
+description: 
+---
+
+```
+import { fetchMint } from "@solana-program/token";
+import { address, createSolanaRpc, mainnet } from "@solana/web3.js";
+
+const rpc = createSolanaRpc(mainnet("https://api.mainnet-beta.solana.com"));
+
+const mint = await fetchMint(
+    rpc,
+    address("ErbakSHZWeLnq1hsqFvNz8FvxSzggrfyNGB6TEGSSgNE" /* FABS */),
+);
+
+console.log(mint.data.supply);
+```
