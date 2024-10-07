@@ -23,7 +23,7 @@ export default function Error({
           Something went wrong {":`("}
         </p>
         <p>
-          We&apos;re sorry, but an error occurred while processing your request.
+          We&apos;re sorry, but an error occurred. I bet it&apos;s Callums fault.
         </p>
       </div>
       <div className="flex items-center gap-2">
