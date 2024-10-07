@@ -19,7 +19,7 @@ export default function Home() {
       </p>
       <div className="flex flex-row items-center gap-5">
         <Link
-          href={`/docs${page_routes[0].href}`}
+          href={`/docs/get-started`}
           className={buttonVariants({ className: "px-6", size: "lg" })}
         >
           Get Stared

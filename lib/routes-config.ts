@@ -9,45 +9,99 @@ export type EachRoute = {
 
 export const ROUTES: EachRoute[] = [
   {
-    title: "Getting Started",
-    href: "/getting-started",
+    title: "Get Started", href: "/get-started",
     noLink: true,
     items: [
-      { title: "Introduction", href: "/introduction" },
       {
         title: "Installation",
         href: "/installation",
+        noLink: true,
         items: [
-          { title: "Laravel", href: "/laravel" },
-          { title: "React", href: "/react" },
-          { title: "Gatsby", href: "/gatsby" },
+          { title: "Node", href: "/node" },
+          { title: "CLI", href: "/cli" },
         ],
-      },
-      { title: "Quick Start Guide", href: "/quick-start-guide" },
+      }],
+  },
+  {
+    title: "Basics", href: "/basics",
+    noLink: true,
+    items: [
       {
-        title: "Project Structure",
-        href: "/project-structure",
-        items: [
-          { title: "Layouts", href: "/layouts" },
-          { title: "Integrations", href: "/integrations" },
-          {
-            title: "Manual",
-            href: "/manual",
-            items: [
-              { title: "JavaScript", href: "/javascript" },
-              { title: "Typescript", href: "/typescript" },
-              { title: "Golang", href: "/golang" },
-            ],
-          },
-        ],
+        title: "Create Keypair",
+        href: "/create-keypair",
+      }, {
+        title: "Set RPC",
+        href: "/set-rpc",
       },
-      { title: "Changelog", href: "/changelog" },
       {
-        title: "FAQ",
-        href: "/faq",
+        title: "Request Airdrop",
+        href: "/request-airdrop",
+      }, {
+        title: "Get Balance",
+        href: "/get-balance",
+      }, {
+        title: "Transfer",
+        href: "/transfer",
+      }, {
+        title: "Get Blockhash",
+        href: "/get-blockhash",
+      },
+      {
+        title: "Burn Token",
+        href: "/burn token",
+      },
+      {
+        title: "Close Account",
+        href: "/close-account",
+      }
+    ],
+  },
+  {
+    title: "Tokens", href: "/tokens",
+    items: [
+      {
+        title: "Create Token",
+        href: "/create-token",
+      },
+      {
+        title: "Mint Token",
+        href: "/mint-token",
+      }, {
+        title: "Get Token Balance",
+        href: "/get-token-balance",
+      }, {
+        title: "Transfer Token",
+        href: "/transfer-token",
+      }, {
+        title: "Get Token Account",
+        href: "/get-token-account",
+      },
+      , {
+        title: "Set Token Authority",
+        href: "/set-token-authority",
       },
     ],
-  }
+  },
+  {
+    title: "Nonce", href: "/nonce",
+    items: [
+      {
+        title: "Create Nonce Account",
+        href: "/create-nonce-account",
+      },
+      {
+        title: "Get Nonce Account",
+        href: "/get-nonce-account",
+      }, {
+        title: "Use Nonce Account",
+        href: "/use-nonce-account",
+      },
+    ],
+  },
+  {
+    title: "Links",
+    href: "/links",
+  },
 ];
 
 type Page = { title: string; href: string };
