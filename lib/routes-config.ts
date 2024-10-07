@@ -47,12 +47,8 @@ export const ROUTES: EachRoute[] = [
         href: "/get-blockhash",
       },
       {
-        title: "Burn Token",
-        href: "/burn token",
-      },
-      {
-        title: "Close Account",
-        href: "/close-account",
+        title: "Get Fee",
+        href: "/get-fee",
       }
     ],
   },
@@ -81,6 +77,14 @@ export const ROUTES: EachRoute[] = [
         title: "Set Token Authority",
         href: "/set-token-authority",
       },
+      {
+        title: "Burn Token",
+        href: "/burn token",
+      },
+      {
+        title: "Close Account",
+        href: "/close-account",
+      }
     ],
   },
   {

@@ -1,0 +1,13 @@
+---
+title: Get Fee
+description: 
+---
+
+```
+import { createSolanaRpc } from "@solana/web3.js";
+
+const rpc = createSolanaRpc("https://api.mainnet-beta.solana.com");
+
+const fee = await rpc.getFeeForMessage('test').send();
+console.log("fee: ", fee);
+```

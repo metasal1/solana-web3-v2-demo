@@ -22,7 +22,7 @@ export default function Home() {
           href={`/docs/get-started`}
           className={buttonVariants({ className: "px-6", size: "lg" })}
         >
-          Get Stared
+          Get Started
         </Link>
       </div>
       <span className="flex flex-row items-start sm:gap-2 gap-0.5 text-muted-foreground text-md mt-7 -mb-12 max-[800px]:mb-12 font-code text-base font-medium">

@@ -1,0 +1,21 @@
+---
+title: Create Keypair
+description: 
+---
+## New Way
+
+```
+import { generateKeyPairSigner } from "@solana/web3.js";
+
+const keypair = await generateKeyPairSigner();
+console.log("keypair: ", keypair);
+```
+## Old Way
+```
+import { Keypair } from "@solana/web3.js";
+
+const keypair = Keypair.generate();
+console.log(`public key: ${keypair.publicKey.toBase58()}`);
+console.log(`private key(raw): ${keypair.secretKey}`);
+console.log(`private key(bs58): ${bs58.encode(keypair.secretKey)}`);
+```

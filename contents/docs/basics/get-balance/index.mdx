@@ -1,0 +1,13 @@
+---
+title: Get Balance
+description: 
+---
+
+```
+import { createSolanaRpc } from "@solana/web3.js";
+
+const rpc = createSolanaRpc("https://api.devnet.solana.com");
+
+const balance = await rpc.getBalance('GaxVqiQyJKQDRu6H4pfy9V6Xq19pHGr6HQKDQDv911Y4').send();
+console.log("balance: ", balance);
+```

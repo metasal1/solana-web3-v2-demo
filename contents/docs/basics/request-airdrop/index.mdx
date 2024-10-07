@@ -1,0 +1,19 @@
+---
+title: Request Airdrop
+description: 
+---
+
+```
+import { generateKeyPairSigner, createSolanaRpc } from "@solana/web3.js";
+
+const keypair = await generateKeyPairSigner();
+console.log("keypair: ", keypair);
+
+const rpc = createSolanaRpc("https://api.devnet.solana.com");
+
+const balance = await rpc.getBalance('GaxVqiQyJKQDRu6H4pfy9V6Xq19pHGr6HQKDQDv911Y4').send();
+console.log("balance: ", balance);
+
+const airdrop = await rpc.requestAirdrop('GaxVqiQyJKQDRu6H4pfy9V6Xq19pHGr6HQKDQDv911Y4', 2_000_000_000).send();
+console.log("airdrop: ", airdrop);
+```

@@ -1,0 +1,13 @@
+---
+title: Get Latest Blockhash
+description: 
+---
+
+```
+import { createSolanaRpc } from "@solana/web3.js";
+
+const rpc = createSolanaRpc("https://api.devnet.solana.com");
+
+const blockhash = await rpc.getLatestBlockhash().send();
+console.log("blockhash: ", blockhash);
+```
