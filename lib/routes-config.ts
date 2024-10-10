@@ -51,14 +51,17 @@ export const ROUTES: EachRoute[] = [
       {
         title: "Get Fee",
         href: "/get-fee",
+      }, {
+        title: "Get Rent",
+        href: "/get-rent",
       },
       {
         title: "Get Slot",
         href: "/get-slot",
       },
       {
-        title: "Get Signature",
-        href: "/get-signature",
+        title: "Get Transaction",
+        href: "/get-transaction",
       }
     ],
   },
