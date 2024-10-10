@@ -55,6 +55,10 @@ export const ROUTES: EachRoute[] = [
       {
         title: "Get Slot",
         href: "/get-slot",
+      },
+      {
+        title: "Get Signature",
+        href: "/get-signature",
       }
     ],
   },

@@ -1,0 +1,13 @@
+---
+title: Get Signature
+description: 
+---
+
+```
+import { createSolanaRpc, mainnet } from "@solana/web3.js";
+
+const rpc = createSolanaRpc(mainnet("https://api.mainnet-beta.solana.com"));
+const signature = '56K4Cdwk9YKpSTZruMNbkhuykj2E55HtCnN8o2j8xUdsthj9G8qPiMwVQBxEXWJ3yht2WGXbxjPpPCqjiSLWAGAA'
+const transaction = await rpc.getTransaction(signature).send()
+console.log(transaction);
+```
