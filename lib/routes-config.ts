@@ -124,7 +124,7 @@ export const ROUTES: EachRoute[] = [
   {
     title: "Links",
     href: "/links",
-  }, ,
+  },
   {
     title: "Course", href: "/course",
     items: [
@@ -145,31 +145,31 @@ export const ROUTES: EachRoute[] = [
         title: 'Project 4 - CRUD',
         href: '/project-04',
       }, {
-        title: 'Project 5 - Token',
+        title: 'Project 5 - Tokens',
         href: '/project-05',
       }, {
         title: 'Project 6 - NFT',
         href: '/project-06',
       }, {
-        title: 'Project 7 - Swap',
+        title: 'Project 7',
         href: '/project-07',
       }, {
-        title: 'Project 8 - Token Vesting',
+        title: 'Project 8',
         href: '/project-08',
       }, {
-        title: 'Project 9 - Token Lottery',
+        title: 'Project 9',
         href: '/project-09',
       }, {
-        title: 'Project 10 - Lending',
+        title: 'Project 10',
         href: '/project-10',
       }, {
-        title: 'Project 11 - Programmable Money',
+        title: 'Project 11',
         href: '/project-11',
       }, {
-        title: 'Project 12 - Attacking the Bank',
+        title: 'Project 12',
         href: '/project-12',
       }, {
-        title: 'Project 13 - Getting to Production',
+        title: 'Project 13',
         href: '/project-13',
       },
     ],
