@@ -124,6 +124,55 @@ export const ROUTES: EachRoute[] = [
   {
     title: "Links",
     href: "/links",
+  }, ,
+  {
+    title: "Course", href: "/course",
+    items: [
+      {
+        title: 'Introduction',
+        href: '/introduction',
+      },
+      {
+        title: 'Project 1 - Favourites',
+        href: '/project-01',
+      }, {
+        title: 'Project 2 - Voting',
+        href: '/project-02',
+      }, {
+        title: 'Project 3 - Blinks and Actions',
+        href: '/project-03',
+      }, {
+        title: 'Project 4 - CRUD',
+        href: '/project-04',
+      }, {
+        title: 'Project 5 - Token',
+        href: '/project-05',
+      }, {
+        title: 'Project 6 - NFT',
+        href: '/project-06',
+      }, {
+        title: 'Project 7 - Swap',
+        href: '/project-07',
+      }, {
+        title: 'Project 8 - Token Vesting',
+        href: '/project-08',
+      }, {
+        title: 'Project 9 - Token Lottery',
+        href: '/project-09',
+      }, {
+        title: 'Project 10 - Lending',
+        href: '/project-10',
+      }, {
+        title: 'Project 11 - Programmable Money',
+        href: '/project-11',
+      }, {
+        title: 'Project 12 - Attacking the Bank',
+        href: '/project-12',
+      }, {
+        title: 'Project 13 - Getting to Production',
+        href: '/project-13',
+      },
+    ],
   },
 ];
 
