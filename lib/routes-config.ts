@@ -120,6 +120,14 @@ export const ROUTES: EachRoute[] = [
         href: "/use-nonce-account",
       },
     ],
+  }, {
+    title: "CLI",
+    href: "/cli",
+    noLink: true,
+    items: [
+      { title: "Disable Freeze", href: "/freeze" },
+      { title: "Disable Mint", href: "/mint" }
+    ],
   },
   {
     title: "Links",
