@@ -127,8 +127,13 @@ export const ROUTES: EachRoute[] = [
     items: [
       { title: "Create Token", href: "/create-token" },
       { title: "Create Account", href: "/create-account" },
-      { title: "Disable Freeze", href: "/freeze" },
-      { title: "Disable Mint", href: "/mint" }
+      { title: "Mint Tokens", href: "/mint-tokens" },
+      { title: "Burn Tokens", href: "/burn-tokens" },
+      { title: "Close Token Account", href: "/close-token-account" },
+      { title: "Disable Freeze", href: "/disable-freeze" },
+      { title: "Disable Mint", href: "/disable-mint" },
+      { title: "Get Supply", href: "/get-supply" },
+      { title: "Display Information", href: "/display-information" }
     ],
   },
   {
