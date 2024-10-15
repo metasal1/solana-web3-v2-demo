@@ -125,6 +125,8 @@ export const ROUTES: EachRoute[] = [
     href: "/cli",
     noLink: true,
     items: [
+      { title: "Create Token", href: "/create-token" },
+      { title: "Create Account", href: "/create-account" },
       { title: "Disable Freeze", href: "/freeze" },
       { title: "Disable Mint", href: "/mint" }
     ],
