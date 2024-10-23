@@ -47,6 +47,9 @@ export const ROUTES: EachRoute[] = [
       }, {
         title: "Get Blockhash",
         href: "/get-blockhash",
+      }, {
+        title: "Get Health",
+        href: "/get-health",
       },
       {
         title: "Get Fee",
