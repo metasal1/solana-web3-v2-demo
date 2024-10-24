@@ -1,0 +1,32 @@
+---
+title: Get Signature
+description: 
+---
+
+```
+import { createSolanaRpc, mainnet } from "@solana/web3.js";
+
+const rpc = createSolanaRpc(mainnet("https://api.mainnet-beta.solana.com"));
+
+const signature = 'E331fz1U7fiCHfwrLq9aeWJMcyMabS5gM9e2focLu6rHdSNnD8Rwo6jVUmpcGMZQ4iRWTbVqch3RT6Gz6M87ZXX'
+
+const transaction = await rpc.getSignatureStatuses([signature], { searchTransactionHistory: true }).send()
+
+console.log(transaction);
+```
+
+## Old Way
+```
+await connection.confirmTransaction({
+        blockhash: latestBlockHash.blockhash,
+        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+        signature: transactionSignature,
+      });
+```
+
+## Really really old Way
+
+```
+const status = await connection.confirmTransaction(signature, 'confirmed');
+console.log(status)
+```
