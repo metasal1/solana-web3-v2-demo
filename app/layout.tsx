@@ -7,6 +7,7 @@ import { GeistMono } from "geist/font/mono";
 import { Footer } from "@/components/footer";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react"
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -42,6 +43,7 @@ export default function RootLayout({
           </main>
           <Footer />
         </ThemeProvider>
+        <Script defer src="https://analytics.tokenshit.com/script.js" data-website-id="e85e2774-182e-4690-bb97-977fd83106cc"></Script>
       </body>
     </html>
   );
