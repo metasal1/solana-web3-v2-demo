@@ -12,7 +12,6 @@ const PROGRAM_DATA_SIZE = 36;
 const connection = new Connection(`https://api.mainnet-beta.solana.com`);
 
 const getPrograms = async () => {
-    console.log(`\n[${new Date().toISOString()}] Fetching programs...`);
     const programs = await connection.getProgramAccounts(
         new PublicKey(BPF_PROGRAM_ID),
         {

@@ -76,6 +76,8 @@ export const ROUTES: EachRoute[] = [
     noLink: true,
     items: [
       { title: "Get Programs", href: "/get-programs" },
+      { title: "Get Program Info", href: "/get-program-info" },
+      { title: "Get Program IDL Address", href: "/get-idl-address" },
     ],
   },
   {

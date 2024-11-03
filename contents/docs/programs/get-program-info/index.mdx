@@ -1,0 +1,25 @@
+---
+title: Get Programs
+description: Get all the programs currently on the Solana blockchain
+---
+
+```
+import { Connection, PublicKey,  } from '@solana/web3.js';
+
+const BPF_PROGRAM_ID = 'BPFLoaderUpgradeab1e11111111111111111111111';
+
+const connection = new Connection(`https://api.mainnet-beta.solana.com`);
+
+const getPrograms = async () => {
+
+const [pda] = 
+    const programInfo = await connection.getParsedAccountInfo(
+        new PublicKey(BPF_PROGRAM_ID)
+    );
+    console.log(programInfo);
+    return programs;
+}
+
+getPrograms();
+
+```
