@@ -70,6 +70,13 @@ export const ROUTES: EachRoute[] = [
         href: "/get-transaction",
       }
     ],
+  }, {
+    title: "Programs",
+    href: "/programs",
+    noLink: true,
+    items: [
+      { title: "Get Programs", href: "/get-programs" },
+    ],
   },
   {
     title: "Tokens",
