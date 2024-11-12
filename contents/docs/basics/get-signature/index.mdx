@@ -3,7 +3,7 @@ title: Get Signature
 description: 
 ---
 
-```
+```js
 import { createSolanaRpc, mainnet } from "@solana/web3.js";
 
 const rpc = createSolanaRpc(mainnet("https://api.mainnet-beta.solana.com"));
@@ -16,17 +16,17 @@ console.log(transaction);
 ```
 
 ## Old Way
-```
+```js
 await connection.confirmTransaction({
-        blockhash: latestBlockHash.blockhash,
-        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-        signature: transactionSignature,
-      });
+    blockhash: latestBlockHash.blockhash,
+    lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+    signature: transactionSignature,
+});
 ```
 
 ## Really really old Way
 
-```
+```js
 const status = await connection.confirmTransaction(signature, 'confirmed');
 console.log(status)
 ```

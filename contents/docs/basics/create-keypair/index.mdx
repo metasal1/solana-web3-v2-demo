@@ -1,17 +1,20 @@
 ---
 title: Create Keypair
-description: 
+description:
 ---
+
 ## New Way
 
-```
+```js
 import { generateKeyPairSigner } from "@solana/web3.js";
 
 const keypair = await generateKeyPairSigner();
 console.log("keypair: ", keypair);
 ```
+
 ## Old Way
-```
+
+```js
 import { Keypair } from "@solana/web3.js";
 
 const keypair = Keypair.generate();
