@@ -24,6 +24,13 @@ export const ROUTES: EachRoute[] = [
     ],
   },
   {
+    title: "Packages",
+    href: "/packages",
+    items: [
+      { title: "Errors", href: "/errors" },
+    ],
+  },
+  {
     title: "Basics", href: "/basics",
     noLink: true,
     items: [
