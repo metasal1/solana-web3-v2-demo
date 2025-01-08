@@ -1,0 +1,29 @@
+---
+title: Load Keypair
+description:
+---
+
+## New Way
+
+```js
+import { createKeyPairFromBytes } from '@solana/web3.js'
+import walletSecret from './wallet.json'
+
+const main = async () => {
+    const keypairBytes = new Uint8Array(walletSecret);
+    const wallet = await createKeyPairFromBytes(keypairBytes);
+    console.log("wallet: ", wallet);
+}
+
+main();
+
+```
+
+## Old Way
+
+```js
+import { Keypair } from "@solana/web3.js";
+import walletSecret from './wallet.json'
+
+const wallet = Keypair.fromSecretKey(new Uint8Array(walletSecret));
+```
