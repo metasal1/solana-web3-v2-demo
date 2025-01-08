@@ -1,0 +1,31 @@
+---
+title: Create Stake Account
+description: Create account for staking
+---
+
+```js
+import { Connection, PublicKey } from '@solana/web3.js';
+
+const BPF_PROGRAM_ID = 'BPFLoaderUpgradeab1e11111111111111111111111';
+const PROGRAM_DATA_SIZE = 36;
+
+const connection = new Connection(`https://api.mainnet-beta.solana.com`);
+
+const getPrograms = async () => {
+    const programs = await connection.getProgramAccounts(
+        new PublicKey(BPF_PROGRAM_ID),
+        {
+            filters: [
+                {
+                    dataSize: PROGRAM_DATA_SIZE,
+                },
+            ],
+        }
+    );
+    console.log(`Current program count: ${programs.length}`);
+    return programs;
+}
+
+getPrograms();
+
+```

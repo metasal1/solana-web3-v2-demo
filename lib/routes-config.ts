@@ -39,6 +39,10 @@ export const ROUTES: EachRoute[] = [
         href: "/create-keypair",
       },
       {
+        title: "Load Keypair",
+        href: "/load-keypair",
+      },
+      {
         title: "Set RPC",
         href: "/set-rpc",
       },
@@ -125,6 +129,16 @@ export const ROUTES: EachRoute[] = [
         title: "Close Account",
         href: "/close-account",
       }
+    ],
+  },
+  {
+    title: "Stake",
+    href: "/stake",
+    items: [
+      { title: "Create Stake Account", href: "/create-stake-account" },
+      { title: "Delegate Stake", href: "/delegate-stake" },
+      { title: "Withdraw Stake", href: "/withdraw-stake" },
+      { title: "List Stake", href: "/list-stake" }
     ],
   },
   {

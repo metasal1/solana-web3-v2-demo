@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: "Solana Web3.js v2 Demo",
     template: "%s | Solana Web3.js v2 Demo",
   },
-  metadataBase: new URL("https://solana-web3-v2-demo.vercel.app/"),
+  metadataBase: new URL("https://solweb3.vercel.app/"),
   description:
     "Solana Web3.js v2 is a JavaScript library for interacting with the Solana blockchain.It provides a simple and efficient way to interact with the Solana network, including reading and writing to the blockchain, managing accounts, and interacting with smart contracts.",
 };
