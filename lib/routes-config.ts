@@ -137,8 +137,17 @@ export const ROUTES: EachRoute[] = [
     items: [
       { title: "Create Stake Account", href: "/create-stake-account" },
       { title: "Delegate Stake", href: "/delegate-stake" },
+      { title: "Activate Stake", href: "/activate-stake" },
+      { title: "Deactivate Stake", href: "/deactivate-stake" },
       { title: "Withdraw Stake", href: "/withdraw-stake" },
       { title: "List Stake", href: "/list-stake" }
+    ],
+  },
+  {
+    title: "Tables",
+    href: "/tables",
+    items: [
+      { title: "Create ALT", href: "/create" },
     ],
   },
   {

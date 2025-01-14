@@ -1,8 +1,112 @@
 ---
 title: Create ALT
-description: 
+description: Create Address Lookup Tables
 ---
 
+
+# New Way
+
+> Note - remember to install @solana-program/address-lookup-table
+
+```tsx
+import walletSecret from './wallet.json'
+import {
+    findAddressLookupTablePda,
+    getCreateLookupTableInstructionAsync,
+} from "@solana-program/address-lookup-table";
+import {
+    appendTransactionMessageInstruction,
+    createKeyPairSignerFromBytes,
+    createSolanaRpc,
+    pipe,
+    createTransactionMessage,
+    setTransactionMessageFeePayerSigner,
+    setTransactionMessageLifetimeUsingBlockhash,
+    getSignatureFromTransaction,
+    signTransactionMessageWithSigners,
+    sendAndConfirmTransactionFactory,
+    createSolanaRpcSubscriptions,
+} from "@solana/web3.js";
+
+export async function createAlt(client: any, authority: any) {
+
+    const recentSlot = await client.rpc.getSlot({ commitment: "finalized" }).send();
+
+    const [alt] = await findAddressLookupTablePda({
+        authority: authority.address,
+        recentSlot
+    });
+
+    const createAltIx = await getCreateLookupTableInstructionAsync({
+        authority,
+        recentSlot
+    });
+
+    const { value: latestBlockhash } = await client.rpc.getLatestBlockhash().send();
+
+    const tx = pipe(
+        createTransactionMessage({ version: 0 }),
+        (tx) => setTransactionMessageFeePayerSigner(authority, tx),
+        (tx) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
+        (tx) => appendTransactionMessageInstruction(createAltIx, tx),
+    );
+
+    const signedTransaction = await signTransactionMessageWithSigners(tx);
+    const signature = getSignatureFromTransaction(signedTransaction);
+    await sendAndConfirmTransactionFactory(client)(signedTransaction, {
+        commitment: 'confirmed',
+        skipPreflight: false
+    });
+    return { alt, signature };
+}
+
+const main = async () => {
+    const rpc = createSolanaRpc('https://api.devnet.solana.com');
+    const wss = createSolanaRpcSubscriptions('wss://api.devnet.solana.com');
+    const client = { rpc, rpcSubscriptions: wss };
+
+    const keypairBytes = new Uint8Array(walletSecret);
+    const authority = await createKeyPairSignerFromBytes(keypairBytes);
+
+    const result = await createAlt(client, authority);
+    console.log("Successfully created:", result);
+}
+main();
+
 ```
+
+# Old Way
+```tsx
+const web3 = require("@solana/web3.js");
+
+const main = async () => {
+
+    const payer = web3.Keypair.generate();
+    console.log('payer', payer.publicKey.toBase58())
+
+    const connection = new web3.Connection("http://localhost:8899");
+    const slot = await connection.getSlot();
+
+    const airdrop = await connection.requestAirdrop(payer.publicKey, web3.LAMPORTS_PER_SOL);
+    const ad = await connection.confirmTransaction({ signature: airdrop });
+    console.log('ad', ad)
+
+    const [lookupTableInst, lookupTableAddress] =
+        web3.AddressLookupTableProgram.createLookupTable({
+            authority: payer.publicKey,
+            payer: payer.publicKey,
+            recentSlot: slot,
+        });
+
+    console.log("lookup table address:", lookupTableAddress.toBase58());
+
+    const tx = new web3.Transaction().add(lookupTableInst);
+    const txHash = await connection.sendTransaction(tx, [payer]);
+    console.log('txHash', txHash)
+
+}
+
+main()
+
 
 ```

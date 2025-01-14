@@ -3,6 +3,8 @@ title: Request Airdrop
 description: 
 ---
 
+## New Way
+
 ```js
 import { generateKeyPairSigner, createSolanaRpc } from "@solana/web3.js";
 
@@ -16,4 +18,9 @@ console.log("balance: ", balance);
 
 const airdrop = await rpc.requestAirdrop('GaxVqiQyJKQDRu6H4pfy9V6Xq19pHGr6HQKDQDv911Y4', 2_000_000_000).send();
 console.log("airdrop: ", airdrop);
+```
+
+## Old Way
+```js
+
 ```

@@ -1,12 +1,12 @@
 ---
 title: Load Keypair
-description:
+description: load a wallet from the filesystem
 ---
 
 ## New Way
 
 ```js
-import { createKeyPairFromBytes } from '@solana/web3.js'
+import { createKeyPairSignerFromBytes } from '@solana/web3.js'
 import walletSecret from './wallet.json'
 
 const main = async () => {
@@ -16,7 +16,6 @@ const main = async () => {
 }
 
 main();
-
 ```
 
 ## Old Way

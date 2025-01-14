@@ -10,6 +10,8 @@ import { generateKeyPairSigner } from "@solana/web3.js";
 
 const keypair = await generateKeyPairSigner();
 console.log("keypair: ", keypair);
+console.log("public key:", keypair.address);
+
 ```
 
 ## Old Way
