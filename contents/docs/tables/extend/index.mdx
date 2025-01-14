@@ -1,0 +1,95 @@
+---
+title: Extend ALT
+description: Extend Address Lookup Tables
+---
+
+# New Way
+
+> Note - remember to install @solana-program/address-lookup-table
+
+```tsx
+import {
+    fetchAddressLookupTable,
+    getExtendLookupTableInstruction
+} from "@solana-program/address-lookup-table";
+import {
+    Address,
+    AddressesByLookupTableAddress,
+    appendTransactionMessageInstruction,
+    createKeyPairSignerFromBytes,
+    createSolanaRpc,
+    createSolanaRpcSubscriptions,
+    createTransactionMessage,
+    getSignatureFromTransaction,
+    KeyPairSigner,
+    pipe,
+    sendAndConfirmTransactionFactory,
+    setTransactionMessageFeePayerSigner,
+    setTransactionMessageLifetimeUsingBlockhash,
+    signTransactionMessageWithSigners,
+} from "@solana/web3.js";
+import walletSecret from "./wallet.json";
+
+type Client = {
+    rpc: any;
+    rpcSubscriptions: any;
+}
+
+export async function extendAlt(
+    client: Client,
+    authority: KeyPairSigner,
+    alt: Address,
+    addresses: Address[]
+) {
+    const extendAltIx = getExtendLookupTableInstruction({
+        address: alt,
+        authority,
+        payer: authority,
+        addresses
+    });
+
+    const { value: latestBlockhash } = await client.rpc.getLatestBlockhash().send();
+
+    const tx = pipe(
+        createTransactionMessage({ version: 0 }),
+        (tx) => setTransactionMessageFeePayerSigner(authority, tx),
+        (tx) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
+        (tx) => appendTransactionMessageInstruction(extendAltIx, tx),
+    );
+
+    const signedTransaction = await signTransactionMessageWithSigners(tx);
+    const signature = getSignatureFromTransaction(signedTransaction);
+    await sendAndConfirmTransactionFactory(client)(signedTransaction, {
+        commitment: 'confirmed',
+        skipPreflight: false
+    });
+
+    const altAccount = await fetchAddressLookupTable(client.rpc, alt);
+
+    const addressesByLookupTableAddress: AddressesByLookupTableAddress = {};
+    addressesByLookupTableAddress[alt] = altAccount.data.addresses;
+
+    // Delay a second here to let lookup table warm up
+    await sleep(1000);
+
+    return { addressesByLookupTableAddress, signature };
+}
+
+async function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const main = async () => {
+    const rpc = createSolanaRpc('https://api.devnet.solana.com');
+    const wss = createSolanaRpcSubscriptions('wss://api.devnet.solana.com');
+    const client = { rpc, rpcSubscriptions: wss };
+
+    const keypairBytes = new Uint8Array(walletSecret);
+    const authority = await createKeyPairSignerFromBytes(keypairBytes);
+
+    const alt = await extendAlt(client, authority, '24uisJYVAt3NhdeyAVJA1y5MERAia42LTTLiRGtrQNmw' as Address, [authority.address]);
+    console.log("Successfully extended:", alt);
+}
+main();
+
+```
