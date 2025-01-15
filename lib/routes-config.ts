@@ -149,6 +149,7 @@ export const ROUTES: EachRoute[] = [
     items: [
       { title: "Create ALT", href: "/create" },
       { title: "Extend ALT", href: "/extend" },
+      { title: "Use ALT", href: "/use" },
     ],
   },
   {

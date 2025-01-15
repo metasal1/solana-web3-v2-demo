@@ -93,3 +93,19 @@ const main = async () => {
 main();
 
 ```
+
+# Old Way
+
+```tsx
+const extendInstruction = web3.AddressLookupTableProgram.extendLookupTable({
+  payer: payer.publicKey,
+  authority: payer.publicKey,
+  lookupTable: lookupTableAddress,
+  addresses: [
+    payer.publicKey,
+    web3.SystemProgram.programId,
+    // list more `publicKey` addresses here
+  ],
+});
+
+```
