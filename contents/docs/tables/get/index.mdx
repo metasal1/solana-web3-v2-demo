@@ -8,6 +8,30 @@ description: Get / fetch the Address Lookup Table
 > Note - remember to install @solana-program/address-lookup-table
 
 ```tsx
+import {
+    AddressesByLookupTableAddress,
+    createSolanaRpc,
+    Address,
+    address
+} from "@solana/web3.js";
+import { fetchAddressLookupTable } from "@solana-program/address-lookup-table";
+
+export async function getAlt(rpc: any, alt: Address) {
+    const altAccount = await fetchAddressLookupTable(rpc, alt);
+
+    const addressesByLookupTableAddress: AddressesByLookupTableAddress = {};
+    addressesByLookupTableAddress[alt] = altAccount.data.addresses;
+
+    return addressesByLookupTableAddress;
+}
+
+const main = async () => {
+    const rpc = createSolanaRpc('https://api.devnet.solana.com');
+
+    const result = await getAlt(rpc, address('24uisJYVAt3NhdeyAVJA1y5MERAia42LTTLiRGtrQNmw'))
+    console.log("Success:", result);
+}
+main();
 
 
 ```

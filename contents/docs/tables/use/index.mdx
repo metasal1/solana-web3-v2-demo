@@ -11,3 +11,21 @@ description: Use Address Lookup Tables in a Instruction / Transaction
 
 
 ```
+
+# Old Way
+
+```tsx
+const messageV0 = new web3.TransactionMessage({
+  payerKey: payer.publicKey,
+  recentBlockhash: blockhash,
+  instructions: arrayOfInstructions, // note this is an array of instructions
+}).compileToV0Message([lookupTableAccount]);
+ 
+const transactionV0 = new web3.VersionedTransaction(messageV0);
+ 
+transactionV0.sign([payer]);
+ 
+const txid = await web3.sendAndConfirmTransaction(connection, transactionV0);
+ 
+console.log(txid);
+```
