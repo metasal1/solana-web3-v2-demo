@@ -3,3 +3,36 @@ title: Tables
 description: Address Lookup Tables / Lookup Tables (ALT / LUT)
 ---
 
+# New Way
+```tsx
+
+```
+
+# Old Way
+
+```tsx
+// Assumptions:
+// - `arrayOfInstructions` has been created as an `array` of `TransactionInstruction`
+// - we are using the `lookupTableAccount` obtained above
+ 
+// construct a v0 compatible transaction `Message`
+const messageV0 = new web3.TransactionMessage({
+  payerKey: payer.publicKey,
+  recentBlockhash: blockhash,
+  instructions: arrayOfInstructions, // note this is an array of instructions
+}).compileToV0Message([lookupTableAccount]);
+ 
+// create a v0 transaction from the v0 message
+const transactionV0 = new web3.VersionedTransaction(messageV0);
+ 
+// sign the v0 transaction using the file system wallet we created named `payer`
+transactionV0.sign([payer]);
+ 
+// send and confirm the transaction
+// (NOTE: There is NOT an array of Signers here; see the note below...)
+const txid = await web3.sendAndConfirmTransaction(connection, transactionV0);
+ 
+console.log(
+  `Transaction: https://explorer.solana.com/tx/${txid}?cluster=devnet`,
+);
+```
