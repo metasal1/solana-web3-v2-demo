@@ -50,11 +50,11 @@ export const ROUTES: EachRoute[] = [
         title: "Request Airdrop",
         href: "/request-airdrop",
       }, {
+        title: "Transfer SOL",
+        href: "/transfer-sol",
+      }, {
         title: "Get Balance",
         href: "/get-balance",
-      }, {
-        title: "Transfer",
-        href: "/transfer",
       }, {
         title: "Get Blockhash",
         href: "/get-blockhash",
@@ -84,7 +84,6 @@ export const ROUTES: EachRoute[] = [
   }, {
     title: "Programs",
     href: "/programs",
-    noLink: true,
     items: [
       { title: "Get Programs", href: "/get-programs" },
       { title: "Get Program Info", href: "/get-program-info" },
@@ -128,7 +127,11 @@ export const ROUTES: EachRoute[] = [
       {
         title: "Close Account",
         href: "/close-account",
-      }
+      },
+      {
+        title: "Get Metadata",
+        href: "/get-metadata",
+      },
     ],
   },
   {
@@ -140,6 +143,7 @@ export const ROUTES: EachRoute[] = [
       { title: "Activate Stake", href: "/activate-stake" },
       { title: "Deactivate Stake", href: "/deactivate-stake" },
       { title: "Withdraw Stake", href: "/withdraw-stake" },
+      { title: "Merge Stake", href: "/merge-stake" },
       { title: "List Stake", href: "/list-stake" }
     ],
   },

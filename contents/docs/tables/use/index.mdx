@@ -8,6 +8,91 @@ description: Use Address Lookup Tables in a Instruction / Transaction
 > Note - remember to install @solana-program/address-lookup-table
 
 ```tsx
+import {
+    address,
+    AddressesByLookupTableAddress,
+    createKeyPairSignerFromBytes,
+    createSolanaRpc,
+    createSolanaRpcSubscriptions,
+    compressTransactionMessageUsingAddressLookupTables,
+    createTransactionMessage,
+    getSignatureFromTransaction,
+    IInstruction,
+    KeyPairSigner,
+    pipe,
+    sendAndConfirmTransactionFactory,
+    setTransactionMessageFeePayerSigner,
+    setTransactionMessageLifetimeUsingBlockhash,
+    signTransactionMessageWithSigners,
+    appendTransactionMessageInstructions,
+    lamports
+} from "@solana/web3.js";
+import { fetchAddressLookupTable } from "@solana-program/address-lookup-table";
+import walletSecret from "./wallet.json";
+import { getTransferSolInstruction } from "@solana-program/system";
+
+type Client = {
+    rpc: any;
+    rpcSubscriptions: any;
+}
+
+export async function sendTransactionWithAlt(
+    client: Client,
+    payer: KeyPairSigner,
+    instructions: IInstruction[],
+    addressesByLookupTableAddress: AddressesByLookupTableAddress
+) {
+
+    const { value: latestBlockhash } = await client.rpc.getLatestBlockhash().send();
+
+    const tx = pipe(
+        createTransactionMessage({ version: 0 }),
+        (tx) => setTransactionMessageFeePayerSigner(payer, tx),
+        (tx) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
+        (tx) => appendTransactionMessageInstructions(instructions, tx),
+        (tx) => compressTransactionMessageUsingAddressLookupTables(tx, addressesByLookupTableAddress),
+    );
+
+    const signedTransaction = await signTransactionMessageWithSigners(tx);
+    const signature = getSignatureFromTransaction(signedTransaction);
+    await sendAndConfirmTransactionFactory(client)(signedTransaction, {
+        commitment: 'confirmed',
+        skipPreflight: false
+    });
+
+    return signature;
+}
+
+const main = async () => {
+    const rpc = createSolanaRpc('https://api.devnet.solana.com');
+    const wss = createSolanaRpcSubscriptions('wss://api.devnet.solana.com');
+    const client = { rpc, rpcSubscriptions: wss };
+
+    const keypairBytes = new Uint8Array(walletSecret);
+    const authority = await createKeyPairSignerFromBytes(keypairBytes);
+
+    const alt = address('24uisJYVAt3NhdeyAVJA1y5MERAia42LTTLiRGtrQNmw');
+
+    const altAccount = await fetchAddressLookupTable(client.rpc, alt);
+    const addresses = altAccount.data.addresses;
+
+    console.log(addresses);
+
+    const txInstructions: IInstruction[] = [];
+
+    for (let i = 0; i < addresses.length; i++) {
+        txInstructions.push(getTransferSolInstruction({
+            amount: lamports(BigInt(1)),
+            source: authority,
+            destination: addresses[i],
+        }))
+    }
+
+    const result = await sendTransactionWithAlt(client, authority, txInstructions, { [alt]: addresses });
+    console.log("Success:", result);
+}
+
+main();
 
 
 ```

@@ -3,29 +3,63 @@ title: Create Stake Account
 description: Create account for staking
 ---
 
-```js
-import { Connection, PublicKey } from '@solana/web3.js';
+# New Way
 
-const BPF_PROGRAM_ID = 'BPFLoaderUpgradeab1e11111111111111111111111';
-const PROGRAM_DATA_SIZE = 36;
+```tsx
 
-const connection = new Connection(`https://api.mainnet-beta.solana.com`);
+```
 
-const getPrograms = async () => {
-    const programs = await connection.getProgramAccounts(
-        new PublicKey(BPF_PROGRAM_ID),
-        {
-            filters: [
-                {
-                    dataSize: PROGRAM_DATA_SIZE,
-                },
-            ],
-        }
+# Old Way
+
+```tsx
+import {
+    clusterApiUrl,
+    Connection,
+    Keypair,
+    LAMPORTS_PER_SOL,
+    StakeProgram,
+    Authorized,
+    sendAndConfirmTransaction,
+    Lockup,
+} from "@solana/web3.js";
+import walletSecret from '../wallet.json'
+import { getStakeActivation } from '@anza-xyz/solana-rpc-get-stake-activation';
+
+(async () => {
+    const wallet = Keypair.fromSecretKey(new Uint8Array(walletSecret));
+    const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+
+    const stakeAccount = Keypair.generate();
+
+    const minimumRent = await connection.getMinimumBalanceForRentExemption(
+        StakeProgram.space
     );
-    console.log(`Current program count: ${programs.length}`);
-    return programs;
-}
+    const amountUserWantsToStake = 1000;
+    const amountToStake = minimumRent + amountUserWantsToStake;
 
-getPrograms();
+    const createStakeAccountTx = StakeProgram.createAccount({
+        authorized: new Authorized(wallet.publicKey, wallet.publicKey),
+        fromPubkey: wallet.publicKey,
+        lamports: amountToStake,
+        lockup: new Lockup(0, 0, wallet.publicKey),
+        stakePubkey: stakeAccount.publicKey,
+    });
+
+    const createStakeAccountTxId = await sendAndConfirmTransaction(
+        connection,
+        createStakeAccountTx,
+        [
+            wallet,
+            stakeAccount
+        ]
+    );
+    console.log(`Stake account created. Tx Id:`, createStakeAccountTxId);
+
+    let stakeBalance = await connection.getBalance(stakeAccount.publicKey);
+    console.log(`Stake account balance:`, stakeBalance);
+
+    let status = await getStakeActivation(connection, stakeAccount.publicKey);
+    console.log(status);
+})();
 
 ```

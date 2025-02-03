@@ -1,0 +1,21 @@
+---
+title: Transfer SOL
+description: Send / transfer SOL 
+---
+
+```tsx
+getTransferSolInstruction({
+            amount: lamports(BigInt(1)),
+            source: authority,
+            destination: addresses[i],
+        })
+```
+
+## Old Way
+```js
+SystemProgram.transfer({
+      fromPubkey: fromKeypair.publicKey,
+      toPubkey: toKeypair.publicKey,
+      lamports: lamportsToSend,
+    }),
+```

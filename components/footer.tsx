@@ -22,7 +22,7 @@ export function FooterButtons() {
   return (
     <>
       <Link
-        href="https://t.me/solanaweb3js"
+        href="https://t.me/solweb3js"
         target="_blank"
         className={buttonVariants({ variant: "outline", size: "sm" })}
       >
