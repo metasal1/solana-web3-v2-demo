@@ -1,8 +1,127 @@
 ---
 title: Create Token
-description: 
+description: Create a Solana SPL token
 ---
+
+# New Way
+
+```tsx 
+
 
 ```
 
+# Old Way
+
+```tsx
+// Using ES Modules instead of CommonJS
+import { 
+  Connection,   Keypair,  PublicKey,   Transaction,   clusterApiUrl,   sendAndConfirmTransaction } from '@solana/web3.js';
+import { 
+  createMint, 
+  TOKEN_PROGRAM_ID, 
+  getOrCreateAssociatedTokenAccount, 
+  mintTo 
+} from '@solana/spl-token';
+
+// Configuration object using modern const
+const CONFIG = {
+  decimals: 9,
+  initialMintAmount: 1_000_000n, // BigInt for large numbers
+  network: 'devnet' // Change to 'mainnet-beta' for production
+};
+
+// Modern arrow function with destructuring
+const createToken = async () => {
+  // Using try-with-resources pattern
+  try {
+    const payer = Keypair.generate();
+    const connection = new Connection(clusterApiUrl(CONFIG.network), 'confirmed');
+
+    // Object destructuring for cleaner code
+    const { publicKey } = payer;
+
+    // Airdrop for devnet testing
+    if (CONFIG.network === 'devnet') {
+      const airdropSig = await connection.requestAirdrop(publicKey, 2e9);
+      await connection.confirmTransaction(airdropSig);
+    }
+
+    // Create mint with modern template literal logging
+    const mint = await createMint(
+      connection,
+      payer,
+      publicKey, // mint authority
+      null,      // freeze authority
+      CONFIG.decimals
+    );
+    console.log(`Mint created: ${mint.toBase58()}`);
+
+    // Get or create token account
+    const { address: tokenAccountAddress } = await getOrCreateAssociatedTokenAccount(
+      connection,
+      payer,
+      mint,
+      publicKey
+    );
+    console.log(`Token account: ${tokenAccountAddress.toBase58()}`);
+
+    // Mint tokens
+    await mintTo(
+      connection,
+      payer,
+      mint,
+      tokenAccountAddress,
+      publicKey,
+      CONFIG.initialMintAmount
+    );
+    console.log(`Minted ${CONFIG.initialMintAmount} tokens to ${tokenAccountAddress.toBase58()}`);
+
+    // Return object with modern shorthand properties
+    return { 
+      mintAddress: mint.toBase58(), 
+      tokenAccountAddress: tokenAccountAddress.toBase58() 
+    };
+
+  } catch (error) {
+    console.error('Token creation failed:', error);
+    throw error;
+  }
+};
+
+// Modern top-level await in modules
+try {
+  const result = await createToken();
+  console.log('Token creation successful:', result);
+} catch (error) {
+  console.error('Failed to create token:', error);
+}
+
+// Optional metadata function with modern features
+const addMetadata = async (mint, payer, connection) => {
+  const { createCreateMetadataAccountV3Instruction } = await import('@metaplex-foundation/mpl-token-metadata');
+  
+  const metadataTx = new Transaction().add(
+    createCreateMetadataAccountV3Instruction({
+      metadata: /* Calculate PDA here */,
+      mint,
+      mintAuthority: payer.publicKey,
+      payer: payer.publicKey,
+      updateAuthority: payer.publicKey,
+    }, {
+      createMetadataAccountArgsV3: {
+        data: {
+          name: "My Token",
+          symbol: "MTK",
+          uri: "https://example.com/token-metadata.json",
+          sellerFeeBasisPoints: 500,
+          creators: null,
+        },
+        isMutable: true,
+        collectionDetails: null,
+      }
+    })
+  );
+
+  await sendAndConfirmTransaction(connection, metadataTx, [payer]);
+};
 ```
