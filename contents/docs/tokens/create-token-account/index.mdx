@@ -1,0 +1,46 @@
+---
+title: Create Token Account
+description: Create account for Solana SPL token
+---
+
+# New Way
+
+```tsx 
+
+
+```
+
+# Old Way
+
+```tsx
+
+import { Connection, Keypair, PublicKey } from '@solana/web3.js';
+import { getOrCreateAssociatedTokenAccount } from '@solana/spl-token';
+import walletSecret from './wallet.json' assert { type: "json" };
+
+const main = async () => {
+    try {
+        const wallet = Keypair.fromSecretKey(new Uint8Array(walletSecret));
+        const connection = new Connection('http://127.0.0.1:8899', 'confirmed');
+
+        const { address: tokenAccountAddress } = await getOrCreateAssociatedTokenAccount(
+            connection,
+            wallet,
+            new PublicKey('4RWxatXMBct4NQxVG39SXenRbTzSsXvAYBNm8WTXEcxa'), // token must exist and minting must not be disabled
+            wallet.publicKey
+        );
+        console.log(`Token account: ${tokenAccountAddress.toBase58()}`);
+
+        return {
+            tokenAccountAddress: tokenAccountAddress.toBase58()
+        };
+
+    } catch (error) {
+        console.error('Token creation failed:', error);
+        throw error;
+    }
+};
+
+main();
+
+```

@@ -1,0 +1,51 @@
+---
+title: Mint Tokens
+description: Mint tokens of an existing token
+---
+
+# New Way
+
+```tsx 
+
+
+```
+
+# Old Way
+
+```tsx
+import { Connection, Keypair, PublicKey } from '@solana/web3.js';
+import { mintTo } from '@solana/spl-token';
+import walletSecret from './wallet.json' assert { type: "json" };
+
+const main = async () => {
+    try {
+        const wallet = Keypair.fromSecretKey(new Uint8Array(walletSecret));
+        const connection = new Connection('http://127.0.0.1:8899', 'confirmed');
+
+        const TOKEN = new PublicKey('4RWxatXMBct4NQxVG39SXenRbTzSsXvAYBNm8WTXEcxa');
+        const TOKEN_ACCOUNT = new PublicKey('4dbNk9diMY8R4sKQEjhvotvsKCSUPEUG2m4QqWvcjpVj');
+
+        await mintTo(
+            connection,
+            wallet,
+            TOKEN,
+            TOKEN_ACCOUNT,
+            wallet.publicKey,
+            10000 // number of tokens - remember to factor in the decimals
+        );
+        console.log(`Minted 10000 tokens to ${TOKEN_ACCOUNT.toBase58()}`);
+
+        return {
+            mintAddress: TOKEN.toBase58(),
+            tokenAccountAddress: TOKEN_ACCOUNT.toBase58()
+        };
+
+    } catch (error) {
+        console.error('Token creation failed:', error);
+        throw error;
+    }
+};
+
+main();
+
+```
