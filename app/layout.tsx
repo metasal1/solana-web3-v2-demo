@@ -43,7 +43,6 @@ export default function RootLayout({
           </main>
           <Footer />
         </ThemeProvider>
-        <Script defer src="https://analytics.tokenshit.com/script.js" data-website-id="e85e2774-182e-4690-bb97-977fd83106cc"></Script>
       </body>
     </html>
   );

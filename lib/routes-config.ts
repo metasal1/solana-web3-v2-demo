@@ -117,10 +117,12 @@ export const ROUTES: EachRoute[] = [
       {
         title: "Get Token Balance",
         href: "/get-token-balance",
-      }, {
+      },
+      {
         title: "Transfer Token",
         href: "/transfer-token",
-      }, {
+      },
+      {
         title: "Get Token Account",
         href: "/get-token-account",
       },

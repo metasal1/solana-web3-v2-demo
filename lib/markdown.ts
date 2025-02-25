@@ -138,6 +138,7 @@ export type BlogMdxFrontmatter = BaseMdxFrontmatter & {
   date: string;
   authors: Author[];
   cover: string;
+  lastUpdated: string;
 };
 
 export async function getAllBlogStaticPaths() {
@@ -157,9 +158,17 @@ export async function getAllBlogs() {
     files.map(async (file) => {
       const filepath = path.join(process.cwd(), `/contents/blogs/${file}`);
       const rawMdx = await fs.readFile(filepath, "utf-8");
+      const stats = await fs.stat(filepath); // Get file stats for last modified date
+
+      const parsed = await parseMdx<BlogMdxFrontmatter>(rawMdx);
       return {
-        ...(await parseMdx<BlogMdxFrontmatter>(rawMdx)),
+        ...parsed,
         slug: file.split(".")[0],
+        // Use frontmatter lastUpdated if it exists, otherwise use file's last modified date
+        frontmatter: {
+          ...parsed.frontmatter,
+          lastUpdated: parsed.frontmatter.lastUpdated || stats.mtime.toISOString().split('T')[0]
+        }
       };
     })
   );
@@ -167,5 +176,5 @@ export async function getAllBlogs() {
 
 export async function getBlogForSlug(slug: string) {
   const blogs = await getAllBlogs();
-  return blogs.find((it) => it.slug == slug);
+  return blogs.find((it) => it.slug === slug);
 }
