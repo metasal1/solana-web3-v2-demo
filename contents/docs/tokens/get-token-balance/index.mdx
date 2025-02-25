@@ -6,23 +6,33 @@ description: Get the balance of a Solana SPL token
 # New Way
 
 ```tsx
+import { address, createSolanaRpc } from "@solana/web3.js";
 
+const rpc = createSolanaRpc('https://api.devnet.solana.com');
+
+const TOKEN_ACCOUNT = address('5KAvdxbUM48qqytGtrzLumDSs4qLUAgg95J7oXHWHXEk');
+
+const getTokenBalance = async () => {
+    const tokenAccountBalance = await rpc.getTokenAccountBalance(TOKEN_ACCOUNT).send()
+    console.log(tokenAccountBalance);
+};
+
+getTokenBalance();
 ```
 
 # Old Way
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 
 const connection = new Connection("https://api.devnet.solana.com");
 
-const publicKey = new PublicKey("MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1");
+const tokenAccount = new PublicKey("37sAdhEFiYxKnQAm7CPd5GLK1ZxWovqn3p87kKjfD44c");
 
-const getBalance = async () => {
-    let balance = await connection.getBalance(publicKey);
-    console.log(`${balance / LAMPORTS_PER_SOL} SOL`);
+const getTokenBalance = async () => {
+    const tokenAccountBalance = await connection.getTokenAccountBalance(tokenAccount);
+    console.log(tokenAccountBalance);
 };
 
-getBalance();
-
+getTokenBalance();
 ```
