@@ -1,13 +1,32 @@
 ---
 title: Get Balance
-description: 
+description: Get SOL balance
 ---
 
-```js
+# New Way
+```tsx
 import { createSolanaRpc } from "@solana/web3.js";
 
 const rpc = createSolanaRpc("https://api.devnet.solana.com");
 
-const balance = await rpc.getBalance('GaxVqiQyJKQDRu6H4pfy9V6Xq19pHGr6HQKDQDv911Y4').send();
+const balance = await rpc.getBalance('MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1').send();
 console.log("balance: ", balance);
 ```
+
+# Old Way
+
+```tsx
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+
+const connection = new Connection("https://api.devnet.solana.com");
+
+const publicKey = new PublicKey("MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1");
+
+const getBalance = async () => {
+    let balance = await connection.getBalance(publicKey);
+    console.log(`${balance / LAMPORTS_PER_SOL} SOL`);
+};
+
+getBalance();
+```
+

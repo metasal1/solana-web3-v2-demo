@@ -3,11 +3,26 @@ title: Get Token Balance
 description: Get the balance of a Solana SPL token
 ---
 
+# New Way
+
 ```tsx
 
 ```
 
-## Example response
-```json 
+# Old Way
+
+```tsx
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+
+const connection = new Connection("https://api.devnet.solana.com");
+
+const publicKey = new PublicKey("MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1");
+
+const getBalance = async () => {
+    let balance = await connection.getBalance(publicKey);
+    console.log(`${balance / LAMPORTS_PER_SOL} SOL`);
+};
+
+getBalance();
 
 ```
