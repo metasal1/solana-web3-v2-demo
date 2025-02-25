@@ -1,32 +1,25 @@
 ---
-title: Get Programs
-description: Get all the programs currently on the Solana blockchain
+title: Get Program Info
+description: Get information about a specific Solana program
 ---
 
-# New Way
+## New Way
 ```tsx
 import { address, createSolanaRpc } from "@solana/web3.js";
 
-const rpc = createSolanaRpc('http://127.0.0.1:8899');
+const rpc = createSolanaRpc('http://localhost:8899');
 
 const PROGRAM_ID = 'Qi4ioHyQKMx7LMFxDAtVz9BJAaofvSFZWSkixBwyWDD';
 
 const getProgramInfo = async () => {
 
     const programInfo = await rpc.getAccountInfo(address(PROGRAM_ID)).send()
-    console.log(`
-      Program Info:
-      - Program ID: ${PROGRAM_ID}
-      - Owner: ${programInfo.value?.owner}
-      - Data Length: ${programInfo.value?.data.length} bytes
-      - Lamports: ${programInfo.value?.lamports}
-      - Executable: ${programInfo.value?.executable}
-    `);
+    console.log(programInfo);
 };
 
 getProgramInfo();
 ```
-# Old Way
+## Old Way
 ```tsx
 import { Connection, PublicKey } from '@solana/web3.js';
 
@@ -39,21 +32,31 @@ const getProgramInfo = async () => {
 
         const publicKey = new PublicKey(PROGRAM_ID);
 
-        const accountInfo = await connection.getAccountInfo(publicKey);
+        const programInfo = await connection.getAccountInfo(publicKey);
 
-        console.log(`
-      Program Info:
-      - Program ID: ${publicKey.toBase58()}
-      - Owner: ${accountInfo.owner.toBase58()}
-      - Data Length: ${accountInfo.data.length} bytes
-      - Lamports: ${accountInfo.lamports}
-      - Executable: ${accountInfo.executable}
-    `);
+        console.log(programInfo);
+
     } catch (error) {
         console.error('Error fetching program info:', error.message);
     }
 };
 
 getProgramInfo();
+```
 
+
+## Example Response
+
+```json
+{
+  context: { apiVersion: '2.0.21', slot: 40415n },
+  value: {
+    data: 't64jUHpmmvtDWHWLvfj6SPkyucCBStmKtjmEtgvgpFSE98PG',
+    executable: true,
+    lamports: 1141440n,
+    owner: 'BPFLoaderUpgradeab1e11111111111111111111111',
+    rentEpoch: 18446744073709551615n,
+    space: 36n
+  }
+}
 ```
