@@ -5,7 +5,26 @@ description: Get all the programs currently on the Solana blockchain
 
 # New Way
 ```tsx
+import { address, createSolanaRpc } from "@solana/web3.js";
 
+const rpc = createSolanaRpc('http://127.0.0.1:8899');
+
+const PROGRAM_ID = 'Qi4ioHyQKMx7LMFxDAtVz9BJAaofvSFZWSkixBwyWDD';
+
+const getProgramInfo = async () => {
+
+    const programInfo = await rpc.getAccountInfo(address(PROGRAM_ID)).send()
+    console.log(`
+      Program Info:
+      - Program ID: ${PROGRAM_ID}
+      - Owner: ${programInfo.value?.owner}
+      - Data Length: ${programInfo.value?.data.length} bytes
+      - Lamports: ${programInfo.value?.lamports}
+      - Executable: ${programInfo.value?.executable}
+    `);
+};
+
+getProgramInfo();
 ```
 # Old Way
 ```tsx
