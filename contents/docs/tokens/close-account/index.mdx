@@ -1,0 +1,45 @@
+---
+title: Close Token Account
+description: Close a SPL token account if balance is 0
+---
+
+## New Way
+
+```tsx 
+
+
+```
+
+## Old Way
+
+```tsx
+import { PublicKey, Connection, Transaction, Keypair } from "@solana/web3.js";
+import { createCloseAccountInstruction } from "@solana/spl-token";
+import wallet from "./wallet.json";
+
+const CONNECTION = new Connection("http://localhost:8899");
+const TOKEN_ACCOUNT = new PublicKey("Gnn2Uj3ds75uYKudm1yoMo2TJAoC4iEwP4UBuh9FbPmB");
+
+const keypair = Keypair.fromSecretKey(new Uint8Array(wallet));
+
+const closeTokenAccount = async () => {
+    try {
+
+        let tx = new Transaction().add(
+            createCloseAccountInstruction(
+                TOKEN_ACCOUNT,
+                keypair.publicKey, // refund destination
+                keypair.publicKey // account owner
+            )
+        );
+        tx.feePayer = keypair.publicKey;
+
+        console.log(`Signature: ${await CONNECTION.sendTransaction(tx, [keypair])}`);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+closeTokenAccount();
+
+```
