@@ -6,8 +6,58 @@ description: Close a SPL token account if balance is 0
 ## New Way
 
 ```tsx 
+import { createSolanaRpc, createKeyPairSignerFromBytes, address, createTransactionMessage, pipe, setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash, appendTransactionMessageInstructions, signTransactionMessageWithSigners, getSignatureFromTransaction, sendAndConfirmTransactionFactory, createSolanaRpcSubscriptions } from "@solana/web3.js";
+import { getCloseAccountInstruction } from "@solana-program/token";
+import wallet from "../wallet.json";
 
+const TOKEN_ACCOUNT = address("Gnn2Uj3ds75uYKudm1yoMo2TJAoC4iEwP4UBuh9FbPmB");
 
+const closeTokenAccount = async () => {
+    try {
+
+        const rpc = createSolanaRpc('http://127.0.0.1:8899');
+        const rpcSubscriptions = createSolanaRpcSubscriptions('ws://127.0.0.1:8900');
+        const sendAndConfirmTransaction = sendAndConfirmTransactionFactory({ rpc, rpcSubscriptions });
+
+        const payer = await createKeyPairSignerFromBytes(new Uint8Array(wallet));
+
+        const instructions = [
+            getCloseAccountInstruction({
+                account: TOKEN_ACCOUNT,
+                destination: payer.address,
+                owner: payer.address,
+            })
+        ];
+
+        const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+        const transaction = pipe(
+            createTransactionMessage({ version: 0 }),
+            (tx) => setTransactionMessageFeePayerSigner(payer, tx),
+            (tx) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
+            (tx) => appendTransactionMessageInstructions(instructions, tx)
+        );
+
+        const signedTransaction = await signTransactionMessageWithSigners(transaction);
+
+        try {
+            await sendAndConfirmTransaction(signedTransaction, {
+                commitment: 'processed',
+                skipPreflight: true
+            });
+            const signature = getSignatureFromTransaction(signedTransaction);
+            console.log(`Account closed: ${TOKEN_ACCOUNT} Signature: ${signature}`);
+        } catch (error) {
+            console.error('Transaction failed:', error);
+            throw error;
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+closeTokenAccount();
 ```
 
 ## Old Way
