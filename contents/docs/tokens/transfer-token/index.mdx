@@ -6,7 +6,63 @@ description: Send Solana SPL tokens using Solana Web3 JS
 ## New Way
 
 ```tsx 
+import { address, appendTransactionMessageInstructions, createSolanaRpc, createSolanaRpcSubscriptions, createTransactionMessage, getSignatureFromTransaction, lamports, pipe, sendAndConfirmTransactionFactory, setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash, signTransactionMessageWithSigners, createKeyPairSignerFromBytes } from "@solana/web3.js";
+import { getTransferInstruction } from "@solana-program/token";
+import wallet1 from './wallet1.json';
+import wallet2 from './wallet2.json';
 
+const WALLET1 = 'Acbc1PgicEHLPWZJBn9wQKueFFeXXzL7da2vqWakWWfW';
+const WALLET2 = '5N1f1eyAocyfEf6SDfRzrECeMejDxQHAets83qJtkRAd'
+const TOKEN = 'DqKJ7P8tpAQ6j4XfCegX8mJ5eUDuoUnnsnCPgBcYy5xo'
+
+const TOKEN_ACCOUNT1 = address("3PVXQ7it7ecGTQhuUefM1sLGVUM8DwnCgVLbpm3ZCtxk");
+const TOKEN_ACCOUNT2 = address("3CCpBnCv3PbQQTuSGGWGi8Q171kpChgA4qg5r5Uncfwf");
+
+const rpc = createSolanaRpc(`http://localhost:8899`);
+const rpcSubscriptions = createSolanaRpcSubscriptions(`ws://localhost:8900`);
+
+const sendAndConfirmTransaction = sendAndConfirmTransactionFactory({ rpc, rpcSubscriptions });
+
+const transferToken = async () => {
+
+    const keypairSigner = await createKeyPairSignerFromBytes(new Uint8Array(wallet1));
+
+    const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+    const transaction = pipe(
+        createTransactionMessage({ version: 0 }),
+        m => setTransactionMessageFeePayerSigner(keypairSigner, m),
+        m => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, m),
+        m => appendTransactionMessageInstructions(
+            [
+                getTransferInstruction({
+                    source: TOKEN_ACCOUNT1,
+                    destination: TOKEN_ACCOUNT2,
+                    amount: 1n,
+                    authority: keypairSigner,
+                }),
+            ],
+            m,
+        ),
+    );
+
+    const signedTransaction = await signTransactionMessageWithSigners(transaction);
+
+    try {
+        await sendAndConfirmTransaction(signedTransaction, {
+            commitment: 'processed',
+            skipPreflight: true
+        });
+        const signature = getSignatureFromTransaction(signedTransaction);
+        console.log(`Transferred: ${TOKEN_ACCOUNT2} Signature: ${signature}`);
+    } catch (error) {
+        console.error('Transaction failed:', error);
+        throw error;
+    }
+
+};
+
+transferToken();
 ```
 
 ## Old Way
