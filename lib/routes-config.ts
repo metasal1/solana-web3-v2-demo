@@ -132,7 +132,7 @@ export const ROUTES: EachRoute[] = [
       },
       {
         title: "Burn Token",
-        href: "/burn token",
+        href: "/burn-token",
       },
       {
         title: "Close Account",
