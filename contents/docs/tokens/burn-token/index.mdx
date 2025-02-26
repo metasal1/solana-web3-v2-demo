@@ -6,7 +6,64 @@ description: Burn 1 or more SPL tokens
 ## New Way
 
 ```tsx 
+import { createSolanaRpc, createKeyPairSignerFromBytes, address, createTransactionMessage, pipe, setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash, appendTransactionMessageInstructions, signTransactionMessageWithSigners, getSignatureFromTransaction, sendAndConfirmTransactionFactory, createSolanaRpcSubscriptions } from "@solana/web3.js";
+import { TOKEN_PROGRAM_ADDRESS, getBurnCheckedInstruction } from '@solana-program/token';
+import wallet from "../wallet.json";
 
+const TOKEN = address("AJ2zpjTy9mSCGNo9sgsRohcVS3EwTNnBQtWwqmoLHq87");
+const TOKEN_ACCOUNT = address("HM5ZgL6J9fRsrM8fj5dbJtVVq7Bz8J4eW48Caa1hT337");
+const AMOUNT = 1_000_000_000;
+
+const burnToken = async () => {
+    try {
+
+        const rpc = createSolanaRpc('http://127.0.0.1:8899');
+        const rpcSubscriptions = createSolanaRpcSubscriptions('ws://127.0.0.1:8900');
+        const sendAndConfirmTransaction = sendAndConfirmTransactionFactory({ rpc, rpcSubscriptions });
+
+        const payer = await createKeyPairSignerFromBytes(new Uint8Array(wallet));
+
+        const instructions = [
+            getBurnCheckedInstruction({
+                account: TOKEN_ACCOUNT,
+                mint: TOKEN,
+                authority: payer.address,
+                amount: AMOUNT,
+                decimals: 9,
+            }, {
+                programAddress: TOKEN_PROGRAM_ADDRESS
+            })
+        ];
+
+        const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+        const transaction = pipe(
+            createTransactionMessage({ version: 0 }),
+            (tx) => setTransactionMessageFeePayerSigner(payer, tx),
+            (tx) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
+            (tx) => appendTransactionMessageInstructions(instructions, tx)
+        );
+
+        const signedTransaction = await signTransactionMessageWithSigners(transaction);
+
+        try {
+            await sendAndConfirmTransaction(signedTransaction, {
+                commitment: 'processed',
+                skipPreflight: true
+            });
+            const signature = getSignatureFromTransaction(signedTransaction);
+            console.log(`Tokens burned: ${AMOUNT} from ${TOKEN_ACCOUNT} Signature: ${signature}`);
+        } catch (error) {
+            console.error('Transaction failed:', error);
+            throw error;
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+burnToken();
 ```
 
 ## Old Way
