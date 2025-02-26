@@ -4,11 +4,57 @@ description: Send / transfer SOL
 ---
 
 ```tsx
-getTransferSolInstruction({
-            amount: lamports(BigInt(1)),
-            source: authority,
-            destination: addresses[i],
-        })
+import { address, appendTransactionMessageInstructions, createSolanaRpc, createSolanaRpcSubscriptions, createTransactionMessage, getSignatureFromTransaction, lamports, pipe, sendAndConfirmTransactionFactory, setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash, signTransactionMessageWithSigners, createKeyPairSignerFromBytes } from "@solana/web3.js";
+import { getTransferSolInstruction } from "@solana-program/system";
+import wallet from '../wallet.json';
+
+const TOKEN_ACCOUNT = address("HM5ZgL6J9fRsrM8fj5dbJtVVq7Bz8J4eW48Caa1hT337");
+
+const rpc = createSolanaRpc(`http://localhost:8899`);
+const rpcSubscriptions = createSolanaRpcSubscriptions(`ws://localhost:8900`);
+
+const sendAndConfirmTransaction = sendAndConfirmTransactionFactory({ rpc, rpcSubscriptions });
+
+const transferSol = async () => {
+
+    const keypairSigner = await createKeyPairSignerFromBytes(new Uint8Array(wallet));
+
+    const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+    const transaction = pipe(
+        createTransactionMessage({ version: 0 }),
+        m => setTransactionMessageFeePayerSigner(keypairSigner, m),
+        m => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, m),
+        m => appendTransactionMessageInstructions(
+            [
+                getTransferSolInstruction({
+                    source: keypairSigner,
+                    destination: TOKEN_ACCOUNT,
+                    amount: lamports(1n),
+                }),
+            ],
+            m,
+        ),
+    );
+
+    const signedTransaction = await signTransactionMessageWithSigners(transaction);
+
+    try {
+        await sendAndConfirmTransaction(signedTransaction, {
+            commitment: 'processed',
+            skipPreflight: true
+        });
+        const signature = getSignatureFromTransaction(signedTransaction);
+        console.log(`Transferred: ${TOKEN_ACCOUNT} Signature: ${signature}`);
+    } catch (error) {
+        console.error('Transaction failed:', error);
+        throw error;
+    }
+
+};
+
+transferSol();
+
 ```
 
 ## Old Way
