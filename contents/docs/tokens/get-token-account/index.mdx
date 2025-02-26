@@ -1,0 +1,36 @@
+---
+title: Get Token Account
+description: Get account for Solana SPL token
+---
+
+# New Way
+
+```tsx 
+import { TOKEN_PROGRAM_ADDRESS, findAssociatedTokenPda } from "@solana-program/token";
+import { createKeyPairSignerFromBytes, address } from "@solana/web3.js";
+
+import wallet from './wallet.json';
+
+async function getAccount() {
+
+    const payer = await createKeyPairSignerFromBytes(new Uint8Array(wallet));
+
+    const mint = address('DqKJ7P8tpAQ6j4XfCegX8mJ5eUDuoUnnsnCPgBcYy5xo');
+
+    const [ata] = await findAssociatedTokenPda({
+        mint: mint,
+        owner: payer.address,
+        tokenProgram: TOKEN_PROGRAM_ADDRESS,
+    });
+
+    console.log(`Token Account: ${ata}`);
+}
+
+getAccount();
+```
+
+# Old Way
+
+```tsx
+
+```
