@@ -1,0 +1,95 @@
+---
+title: Create and Transfer Subdomains
+description: Scripts to create and transfer Solana / Bonfida Subdomains
+---
+
+## Old Way
+
+```tsx
+import { Connection, Keypair, Transaction, sendAndConfirmTransaction, PublicKey, TransactionInstruction } from '@solana/web3.js';
+import { createSubdomain, transferSubdomain } from '@bonfida/spl-name-service';
+import fs from 'fs';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const SOLANA_RPC_URL = process.env.RPC_URL!;
+const WALLET_PATH = '/Users/metasal/.config/solana/id.json';
+const PARENT_DOMAIN = 'gamblethis.sol';
+const SUBDOMAIN = 'example';
+const FULL_DOMAIN = `${SUBDOMAIN}.${PARENT_DOMAIN}`;
+const NEW_OWNER_PUBLIC_KEY = new PublicKey('GaxVqiQyJKQDRu6H4pfy9V6Xq19pHGr6HQKDQDv911Y4');
+
+const createAndTransferSubdomain = async () => {
+    try {
+        console.log(`Attempting to register subdomain ${FULL_DOMAIN}...`);
+
+        const connection = new Connection(SOLANA_RPC_URL, 'confirmed');
+
+        const walletKeyData = JSON.parse(fs.readFileSync(WALLET_PATH, 'utf8'));
+        const walletKeypair = Keypair.fromSecretKey(
+            Uint8Array.from(walletKeyData)
+        );
+
+        console.log(`Using wallet: ${walletKeypair.publicKey.toString()}`);
+
+        // Create a single transaction
+        const transaction = new Transaction();
+
+        // Add subdomain creation instruction
+        console.log('Creating subdomain instruction...');
+        const createResult = await createSubdomain(
+            connection,
+            FULL_DOMAIN,
+            walletKeypair.publicKey
+        );
+
+        transaction.add(...createResult);
+
+        if (NEW_OWNER_PUBLIC_KEY) {
+            console.log('Adding transfer instruction...');
+            const newOwner = new PublicKey(NEW_OWNER_PUBLIC_KEY);
+            const transferResult = await transferSubdomain(
+                connection,
+                FULL_DOMAIN,
+                newOwner,
+                true,
+                walletKeypair.publicKey
+            );
+
+            transaction.add(transferResult);
+
+            // Set recent blockhash and fee payer
+            const { blockhash } = await connection.getLatestBlockhash('finalized');
+            transaction.recentBlockhash = blockhash;
+            transaction.feePayer = walletKeypair.publicKey;
+
+            // Sign and send transaction
+            console.log('Sending transaction...');
+            const signature = await sendAndConfirmTransaction(
+                connection,
+                transaction,
+                [walletKeypair],
+                {
+                    commitment: 'confirmed',
+                    skipPreflight: false,
+                    preflightCommitment: 'confirmed'
+                }
+            );
+
+            console.log(`✅ Successfully processed transaction for ${FULL_DOMAIN}!`);
+            console.log(`Transaction signature: ${signature}`);
+            console.log(`Solana Explorer: https://explorer.solana.com/tx/${signature}`);
+
+        }
+        process.exit(1);
+    } catch (error) {
+        console.error('Error processing transaction:');
+        console.error(error);
+        process.exit(1);
+    }
+};
+
+createAndTransferSubdomain();
+
+```

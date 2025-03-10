@@ -3,6 +3,8 @@ title: Create Subdomains
 description: Scripts to create Solana / Bonfida Subdomains
 ---
 
+## Old Way
+
 ```tsx
 import { Connection, Keypair, Transaction, sendAndConfirmTransaction } from '@solana/web3.js';
 import { createSubdomain } from '@bonfida/spl-name-service';
@@ -17,7 +19,7 @@ const PARENT_DOMAIN = 'gamblethis.sol';
 const SUBDOMAIN = 'example';
 const FULL_DOMAIN = `${SUBDOMAIN}.${PARENT_DOMAIN}`;
 
-const main = async () => {
+const createSubdomain = async () => {
     try {
         console.log(`Attempting to register subdomain ${FULL_DOMAIN}...`);
 
@@ -58,11 +60,6 @@ const main = async () => {
         console.log(`Transaction signature: ${signature}`);
         console.log(`Solana Explorer: https://explorer.solana.com/tx/${signature}`);
 
-        // Optionally transfer the subdomain to another owner
-        // If you want to transfer immediately, you could add that code here
-        // const transferIx = await transferSubdomain(connection, FULL_DOMAIN, newOwnerPublicKey, false);
-        // ... create and sign a new transaction with this instruction
-
     } catch (error) {
         console.error('Error registering subdomain:');
         console.error(error);
@@ -70,6 +67,6 @@ const main = async () => {
     }
 };
 
-main();
+createSubdomain();
 
 ```

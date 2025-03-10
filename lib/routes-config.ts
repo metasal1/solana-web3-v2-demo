@@ -183,6 +183,17 @@ export const ROUTES: EachRoute[] = [
       },
     ],
   }, {
+    title: "Domains",
+    href: "/domains",
+    items: [
+      { title: "Create Domain", href: "/create-domain" },
+      { title: "Transfer Domain", href: "/transfer-domain" },
+      { title: "Create and Transfer", href: "/create-transfer-domain" },
+      { title: "Create Subdomain", href: "/create-subdomain" },
+      { title: "Transfer Subdomain", href: "/transfer-subdomain" },
+      { title: "Create and Transfer Subdomain", href: "/create-transfer-subdomain" },
+    ],
+  }, {
     title: "CLI",
     href: "/cli",
     noLink: true,
