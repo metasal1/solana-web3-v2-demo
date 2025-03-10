@@ -111,8 +111,16 @@ export const ROUTES: EachRoute[] = [
         href: "/create-metadata",
       },
       {
+        title: "Get Metadata",
+        href: "/get-metadata",
+      },
+      {
         title: "Get Token",
         href: "/get-token",
+      },
+      {
+        title: "Get Token Account",
+        href: "/get-token-account",
       },
       {
         title: "Get Token Balance",
@@ -123,14 +131,6 @@ export const ROUTES: EachRoute[] = [
         href: "/transfer-token",
       },
       {
-        title: "Get Token Account",
-        href: "/get-token-account",
-      },
-      {
-        title: "Set Token Authority",
-        href: "/set-token-authority",
-      },
-      {
         title: "Burn Token",
         href: "/burn-token",
       },
@@ -139,9 +139,9 @@ export const ROUTES: EachRoute[] = [
         href: "/close-account",
       },
       {
-        title: "Get Metadata",
-        href: "/get-metadata",
-      },
+        title: "Set Token Authority",
+        href: "/set-token-authority",
+      }
     ],
   },
   {
