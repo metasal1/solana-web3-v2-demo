@@ -1,0 +1,26 @@
+---
+title: Convert Base 58 to Base 64
+description: Useful script in particular for Squads Tx Builder
+---
+
+```tsx
+import bs58 from 'bs58';
+
+const base58Transaction = "E35pv27S21QExcaVvxkBGHVBYibpYxyCWgbbksJwF59n94paWbXXFkmB6e5uXSPF1YNHxVnCBJ7DApr1vbL48bHymrnGSDrecLo6JJmvXtt41HSUU6XoGb2y4Sash8pqseKANAY649vPtbQtUHLzpT5aM71rryYc7kBbWRrAdAMmkUkMXKYzZwKqBjsFrvHD1e2QMHsBQtoneS5xEYWYWyaV9pqtSKW8c3mi6ujfgrs1WuY1awEi8RnsQgDtP7RxbBzWCG8YDV6yMwaVguZjyNfdbcHHwYuFoCLUARevogY6xFHdauf556tZLGSYHd97D5uehLMZacbZgNnshjnFcc25AtiJZC9arqvAD72Bw85Y6iyxcYKSL5JSsKfURjtED6oC9mFzf6W25pSFV6yGwCegqautzreEa1ahhN6oiBbTMBAbD9aZzhhFY679XdZ7KxFSqxhd5Ptxy1Zorosoqs48z6ErYpx5aL4dba7jbRoLXWLoRFhjnYhnGmrjMbmfkpUAsixnh7RhFXwE2oy4agcfECUvgXBTc8XUtxhrSN9vjjvaGcwNi88iwZ4SWnXvw4gD1VYSEijshmWvxLD6843z2rVYRGtt1HKeMfr6WkrDmyygnC7iDVG2t7r15dQZ6y9SgoCZJASaNeuRjubS6AqHqFzYc7gCbQj3AjMRS5QdLQiLrwcdnNV9gXUywfvv2yBkCinxREoLSRgCfYWBpbaasN9Ju3R3j1aVpqBqYnRTtbiFZomRvT3XwvfaXMr7smkCxn7e8Rqn4JbFSLLhV7NmsjyHnFauTxq92Skg9776GLjFFuNVRqxiNBTP6iJX68SWp9F57HTGCAdMraxEWkc1YK8prczs1";
+
+try {
+    // Step 1: Decode Base58 string to raw bytes
+    const bytes = bs58.decode(base58Transaction);
+
+    // Step 2: Encode the raw bytes to Base64 using Buffer
+    const base64Transaction = Buffer.from(bytes).toString('base64');
+
+    console.log("Base64-encoded transaction:", base64Transaction);
+} catch (error) {
+    console.error("Error:", error.message);
+}
+```
+
+[Squads Tx Builder](https://docs.squads.so/main/navigating-your-squad/developers-assets/transaction-builder)
+
+[Sign And Send](https://signandsend.vercel.app/)

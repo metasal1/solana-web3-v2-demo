@@ -93,6 +93,10 @@ export const ROUTES: EachRoute[] = [
       {
         title: "Convert Base 64 to Base 58",
         href: "/base64-to-base58",
+      },
+      {
+        title: "Convert Base 58 to Base 64",
+        href: "/base58-to-base64",
       }
     ],
   },
