@@ -1,0 +1,122 @@
+---
+title: Deserialize Transactions
+description: Use this script to deserialize a Solana Transaction
+---
+
+```tsx 
+import { Connection, clusterApiUrl, VersionedTransaction, PublicKey } from '@solana/web3.js';
+
+const base64Tx = 'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAGDAU9gifW2qF9+WKl6AmL5S1zJy3gB0sZeX8mYQ4wnXzyKiQ8bf8AU1Ji1D7mG1C+DIYzNPeIL4vFeKVrzDeQMyqqo7vV1dLK/DYgLuHJdSRYsPzl3MIRhww4ykhD69i9oY23CfX0nIX7+Ouix6o8Z4LPilhxwrfmOOWPJtDkGN63QeXlHWZDRtr0CLw8pU0p/xcywx9JG9sCkE29uHqMcMLB9bfFsCAaLorPN+oGRL1ycVB4EUrvmxN6UEneXV0jxgMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAABkczsrSnlFJRDJePaTkiLtXgxT9gJrDK0pvXeOM1lMIOyJqAbxGjC6yHNXvqJWesbeEevHqpcUXy8vpFhkPXTVZLfT8kj68STEY8NADbj5xhEMB43pjhp7TPZmwWV98M02dBpIbk5cAgoKUyef55XQt6FjlqM0Xnf3dl7ifnnhYG3fbh12Whk9nL4UbO63msHLSF7V9bN5E6jPWFfv8AqXtpn4j4y79tApRSbsWmwSKNuVAx9jrRgwNgw6cOwQHZAwYACQPYuAUAAAAAAAYABQJADQMABwsAAQIIAwQFCQcKCxAkOemwtRRXnwDh9QUAAAAAAA==';
+
+const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+
+const analyzeVersionedTransaction = async (base64Tx) => {
+    try {
+        // Decode the Base64 string into a Buffer
+        const serializedTx = Buffer.from(base64Tx, 'base64');
+
+        // Deserialize the transaction as a VersionedTransaction
+        const versionedTx = VersionedTransaction.deserialize(serializedTx);
+
+        // Log transaction details
+        console.log('Transaction Signatures:', versionedTx.signatures);
+        console.log('Version:', versionedTx.version);
+
+        // Inspect the message (contains accounts, instructions, etc.)
+        const message = versionedTx.message;
+        console.log('Number of Instructions:', message.compiledInstructions.length);
+
+        // Log accounts involved in the transaction
+        console.log('Accounts Involved:');
+        const accountKeys = message.getAccountKeys();
+        accountKeys.keySegments().flat().forEach((pubkey, index) => {
+            console.log(`  Account ${index}: ${pubkey.toBase58()}`);
+        });
+
+        // Log instructions
+        console.log('Instructions:');
+        message.compiledInstructions.forEach((instruction, index) => {
+            console.log(`  Instruction ${index}:`);
+            console.log('    Program ID:', accountKeys.get(instruction.programIdIndex).toBase58());
+            console.log('    Accounts:', instruction.accountKeyIndexes.map(idx => accountKeys.get(idx).toBase58()));
+            console.log('    Data (Base64):', Buffer.from(instruction.data).toString('base64'));
+        });
+
+        // Optional: Simulate the transaction (if needed)
+        const simulation = await connection.simulateTransaction(versionedTx);
+        console.log('Simulation Result:', simulation);
+
+    } catch (error) {
+        console.error('Error analyzing transaction:', error);
+    }
+}
+
+analyzeVersionedTransaction(base64Tx);
+```
+
+## Example Output
+
+```json
+Transaction Signatures: [
+  Uint8Array(64) [
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0
+  ]
+]
+Version: 0
+Number of Instructions: 3
+Accounts Involved:
+  Account 0: MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1
+  Account 1: 3qWAu5u2EnkEQEXqh2LVKH13k98eosdvLWp6XQf9Gnsj
+  Account 2: CV77hkUKZju1hgrA5NyNongLMQHMxj1mCLCDtfnbfNsi
+  Account 3: AYCNDy5TMEvkyGQSa1ZrM48QTvGHHfLc4DfEZyikKenr
+  Account 4: 5SEpbdjFK5FxwTvfsGMXVQTD2v4M2c5tyRTxhdsPkgDw
+  Account 5: E48zzHrrqS9fXFiRfRv8bZhjLovYKPYUdNrdbLUrZfSM
+  Account 6: ComputeBudget111111111111111111111111111111
+  Account 7: RWRDdfRbi3339VgKxTAXg4cjyniF7cbhNbMxZWiSKmj
+  Account 8: zi87E9xtFPRQ2o9qqerFxUDQLZgEkHrhpHDxxZhYi9a
+  Account 9: 6orprZf4ytxRUEdQUYzRUjfrCExW4ujf9djTeCeHdgeo
+  Account 10: FEELzfBhsWXTNJX53zZcDVfRNoFYZQ6cZA3jLiGVL16V
+  Account 11: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+Instructions:
+  Instruction 0:
+    Program ID: ComputeBudget111111111111111111111111111111
+    Accounts: []
+    Data (Base64): A9i4BQAAAAAA
+  Instruction 1:
+    Program ID: ComputeBudget111111111111111111111111111111
+    Accounts: []
+    Data (Base64): AkANAwA=
+  Instruction 2:
+    Program ID: RWRDdfRbi3339VgKxTAXg4cjyniF7cbhNbMxZWiSKmj
+    Accounts: [
+  'MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1',
+  '3qWAu5u2EnkEQEXqh2LVKH13k98eosdvLWp6XQf9Gnsj',
+  'CV77hkUKZju1hgrA5NyNongLMQHMxj1mCLCDtfnbfNsi',
+  'zi87E9xtFPRQ2o9qqerFxUDQLZgEkHrhpHDxxZhYi9a',
+  'AYCNDy5TMEvkyGQSa1ZrM48QTvGHHfLc4DfEZyikKenr',
+  '5SEpbdjFK5FxwTvfsGMXVQTD2v4M2c5tyRTxhdsPkgDw',
+  'E48zzHrrqS9fXFiRfRv8bZhjLovYKPYUdNrdbLUrZfSM',
+  '6orprZf4ytxRUEdQUYzRUjfrCExW4ujf9djTeCeHdgeo',
+  'RWRDdfRbi3339VgKxTAXg4cjyniF7cbhNbMxZWiSKmj',
+  'FEELzfBhsWXTNJX53zZcDVfRNoFYZQ6cZA3jLiGVL16V',
+  'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+]
+    Data (Base64): JDnpsLUUV58A4fUFAAAAAA==
+Simulation Result: {
+  context: { apiVersion: '2.1.11', slot: 326332887 },
+  value: {
+    accounts: null,
+    err: 'BlockhashNotFound',
+    innerInstructions: null,
+    logs: [],
+    replacementBlockhash: null,
+    returnData: null,
+    unitsConsumed: 0
+  }
+}
+```

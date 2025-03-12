@@ -81,7 +81,18 @@ export const ROUTES: EachRoute[] = [
         href: "/get-transaction",
       }
     ],
-  }, {
+  },
+  {
+    title: "Advanced",
+    href: "/advanced",
+    items: [
+      {
+        title: "Deserialize Transactions",
+        href: "/deserialize-transactions",
+      }
+    ],
+  },
+  {
     title: "Programs",
     href: "/programs",
     items: [
