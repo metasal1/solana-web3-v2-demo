@@ -1,0 +1,24 @@
+---
+title: Convert Base 64 to Base 58
+description: Useful script in particular for Squads Tx Builder
+---
+
+```tsx 
+import bs58 from 'bs58';
+
+const base64Tx = 'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAGDAU9gifW2qF9+WKl6AmL5S1zJy3gB0sZeX8mYQ4wnXzyKiQ8bf8AU1Ji1D7mG1C+DIYzNPeIL4vFeKVrzDeQMyqqo7vV1dLK/DYgLuHJdSRYsPzl3MIRhww4ykhD69i9oY23CfX0nIX7+Ouix6o8Z4LPilhxwrfmOOWPJtDkGN63QeXlHWZDRtr0CLw8pU0p/xcywx9JG9sCkE29uHqMcMLB9bfFsCAaLorPN+oGRL1ycVB4EUrvmxN6UEneXV0jxgMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAABkczsrSnlFJRDJePaTkiLtXgxT9gJrDK0pvXeOM1lMIOyJqAbxGjC6yHNXvqJWesbeEevHqpcUXy8vpFhkPXTVZLfT8kj68STEY8NADbj5xhEMB43pjhp7TPZmwWV98M02dBpIbk5cAgoKUyef55XQt6FjlqM0Xnf3dl7ifnnhYG3fbh12Whk9nL4UbO63msHLSF7V9bN5E6jPWFfv8AqXtpn4j4y79tApRSbsWmwSKNuVAx9jrRgwNgw6cOwQHZAwYACQPYuAUAAAAAAAYABQJADQMABwsAAQIIAwQFCQcKCxAkOemwtRRXnwDh9QUAAAAAAA==';
+
+try {
+    // Step 1: Decode Base64 string to raw bytes
+    const bytes = Buffer.from(base64Tx, 'base64');
+
+    // Step 2: Encode the raw bytes to Base58
+    const base58Transaction = bs58.encode(bytes);
+
+    console.log("Base58-encoded transaction:", base58Transaction);
+} catch (error) {
+    console.error("Error:", error.message);
+}
+```
+
+[Squads Tx Builder](https://docs.squads.so/main/navigating-your-squad/developers-assets/transaction-builder)

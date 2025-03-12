@@ -89,6 +89,10 @@ export const ROUTES: EachRoute[] = [
       {
         title: "Deserialize Transactions",
         href: "/deserialize-transactions",
+      },
+      {
+        title: "Convert Base 64 to Base 58",
+        href: "/base64-to-base58",
       }
     ],
   },
