@@ -31,8 +31,6 @@ export default function RootLayout({
         trackScreenViews={true}
         trackAttributes={true}
         trackOutgoingLinks={true}
-      // If you have a user id, you can pass it here to identify the user
-      // profileId={'123'}
       />
 
       <body
