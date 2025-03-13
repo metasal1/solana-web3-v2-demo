@@ -7,7 +7,7 @@ import { GeistMono } from "geist/font/mono";
 import { Footer } from "@/components/footer";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react"
-import Script from "next/script";
+import { OpenPanelComponent } from '@openpanel/nextjs';
 
 export const metadata: Metadata = {
   title: {
@@ -26,6 +26,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <OpenPanelComponent
+        clientId="4ee87592-0c8d-4897-b140-2a05a0d56889"
+        trackScreenViews={true}
+        trackAttributes={true}
+        trackOutgoingLinks={true}
+      // If you have a user id, you can pass it here to identify the user
+      // profileId={'123'}
+      />
+
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} font-regular antialiased`}
         suppressHydrationWarning
