@@ -11,12 +11,12 @@ import { OpenPanelComponent } from '@openpanel/nextjs';
 
 export const metadata: Metadata = {
   title: {
-    default: "Solana Web3.js v2 Demo",
-    template: "%s | Solana Web3.js v2 Demo",
+    default: "SolWebKit - Solana Web3.js v2",
+    template: "%s | SolWebKit / Solana Web3.js v2",
   },
   metadataBase: new URL("https://solweb3.vercel.app/"),
   description:
-    "Solana Web3.js v2 is a JavaScript library for interacting with the Solana blockchain.It provides a simple and efficient way to interact with the Solana network, including reading and writing to the blockchain, managing accounts, and interacting with smart contracts.",
+    "Solana Web Kit / Solana Web3.js v2 is a JavaScript library for interacting with the Solana blockchain.It provides a simple and efficient way to interact with the Solana network, including reading and writing to the blockchain, managing accounts, and interacting with smart contracts.",
 };
 
 export default function RootLayout({
