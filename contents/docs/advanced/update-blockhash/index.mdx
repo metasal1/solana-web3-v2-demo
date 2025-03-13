@@ -1,0 +1,55 @@
+---
+title: Update Blockhash
+description: Update the blockhash of a Solana Transaction
+---
+
+```tsx 
+import { Connection, clusterApiUrl, VersionedTransaction, Keypair } from '@solana/web3.js';
+import walletSecret from "/Users/metasal/.config/solana/id.json";
+
+const wallet = Keypair.fromSecretKey(new Uint8Array(walletSecret));
+const base64Tx = 'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAGDAU9gifW2qF9+WKl6AmL5S1zJy3gB0sZeX8mYQ4wnXzyKiQ8bf8AU1Ji1D7mG1C+DIYzNPeIL4vFeKVrzDeQMyqqo7vV1dLK/DYgLuHJdSRYsPzl3MIRhww4ykhD69i9oY23CfX0nIX7+Ouix6o8Z4LPilhxwrfmOOWPJtDkGN63QeXlHWZDRtr0CLw8pU0p/xcywx9JG9sCkE29uHqMcMLB9bfFsCAaLorPN+oGRL1ycVB4EUrvmxN6UEneXV0jxgMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAABkczsrSnlFJRDJePaTkiLtXgxT9gJrDK0pvXeOM1lMIOyJqAbxGjC6yHNXvqJWesbeEevHqpcUXy8vpFhkPXTVZLfT8kj68STEY8NADbj5xhEMB43pjhp7TPZmwWV98M02dBpIbk5cAgoKUyef55XQt6FjlqM0Xnf3dl7ifnnhYG3fbh12Whk9nL4UbO63msHLSF7V9bN5E6jPWFfv8AqTIzF4sp1AmCt4FLNDUsqNvowXfDTjD6ZDFe8jfzNsGtAwYACQPYuAUAAAAAAAYABQJADQMABwsAAQIIAwQFCQcKCxAkOemwtRRXnwCxCBkAAAAAAA==';
+
+const connection = new Connection('https://velvet-hw7q70-fast-mainnet.helius-rpc.com', 'confirmed');
+
+const analyzeAndUpdateVersionedTransaction = async (base64Tx) => {
+    try {
+
+        // Decode the Base64 string into a Buffer
+        const serializedTx = Buffer.from(base64Tx, 'base64');
+        const versionedTx = VersionedTransaction.deserialize(serializedTx);
+
+
+        // Get a new recent blockhash
+        const { blockhash } = await connection.getLatestBlockhash('confirmed');
+        console.log('Old Blockhash:', versionedTx.message.recentBlockhash);
+        console.log('New Blockhash:', blockhash);
+
+        // Update the recent blockhash in the message
+        versionedTx.message.recentBlockhash = blockhash;
+
+        // Re-sign the transaction with the wallet
+        versionedTx.sign([wallet]);
+
+        // Simulate the transaction with the updated blockhash and signatures
+        const simulation = await connection.simulateTransaction(versionedTx);
+        console.log('Simulation Result:', simulation);
+
+        // Serialize the updated transaction back to base64
+        const updatedSerializedTx = versionedTx.serialize();
+        const updatedBase64Tx = Buffer.from(updatedSerializedTx).toString('base64');
+        console.log('\nUpdated Transaction (Base64):', updatedBase64Tx);
+
+        const signature = await connection.sendTransaction(versionedTx, {
+            skipPreflight: false,
+            preflightCommitment: 'confirmed'
+        });
+        console.log('Transaction Signature:', signature);
+
+    } catch (error) {
+        console.error('Error analyzing or updating transaction:', error);
+    }
+}
+
+analyzeAndUpdateVersionedTransaction(base64Tx);
+```
