@@ -6,7 +6,7 @@ description: Get the balance of a Solana SPL token
 # New Way
 
 ```tsx
-import { address, createSolanaRpc } from "@solana/web3.js";
+import { address, createSolanaRpc } from "@solana/kit";
 
 const rpc = createSolanaRpc('https://api.devnet.solana.com');
 
@@ -23,7 +23,7 @@ getTokenBalance();
 # Old Way
 
 ```tsx
-import { Connection, PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/kit";
 
 const connection = new Connection("https://api.devnet.solana.com");
 

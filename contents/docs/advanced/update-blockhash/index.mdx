@@ -4,7 +4,7 @@ description: Update the blockhash of a Solana Transaction
 ---
 
 ```tsx 
-import { Connection, clusterApiUrl, VersionedTransaction, Keypair } from '@solana/web3.js';
+import { Connection, clusterApiUrl, VersionedTransaction, Keypair } from '@solana/kit';
 import walletSecret from "/Users/metasal/.config/solana/id.json";
 
 const wallet = Keypair.fromSecretKey(new Uint8Array(walletSecret));

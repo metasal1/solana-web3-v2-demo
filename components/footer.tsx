@@ -30,12 +30,12 @@ export function FooterButtons() {
         Telegram Channel
       </Link>
       <Link
-        href="https://github.com/solana-labs/solana-web3.js"
+        href="https://github.com/anza-xyz/kit"
         target="_blank"
         className={buttonVariants({ variant: "outline", size: "sm" })}
       >
         <HeartIcon className="h-4 w-4 mr-2 text-red-600 fill-current" />
-        Solana Web Kit
+        Solana Kit
       </Link>
       <Link
         href="https://metasal.xyz"

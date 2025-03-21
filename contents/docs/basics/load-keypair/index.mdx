@@ -6,7 +6,7 @@ description: load a wallet from the filesystem
 ## New Way
 
 ```js
-import { createKeyPairSignerFromBytes } from '@solana/web3.js'
+import { createKeyPairSignerFromBytes } from '@solana/kit'
 import walletSecret from './wallet.json'
 
 const main = async () => {
@@ -21,7 +21,7 @@ main();
 ## Old Way
 
 ```js
-import { Keypair } from "@solana/web3.js";
+import { Keypair } from "@solana/kit";
 import walletSecret from './wallet.json'
 
 const wallet = Keypair.fromSecretKey(new Uint8Array(walletSecret));
