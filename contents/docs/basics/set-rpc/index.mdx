@@ -6,7 +6,7 @@ description: Create a connection to an RPC
 # New Way
 
 ```tsx 
-import { createSolanaRpc } from "@solana/web3.js";
+import { createSolanaRpc } from "@solana/kit";
 
 const rpc = createSolanaRpc("https://api.devnet.solana.com");
 ```
@@ -14,7 +14,7 @@ const rpc = createSolanaRpc("https://api.devnet.solana.com");
 # Old Way
 
 ```tsx
-import { clusterApiUrl, Connection } from "@solana/web3.js";
+import { clusterApiUrl, Connection } from "@solana/kit";
  
 const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
 ```

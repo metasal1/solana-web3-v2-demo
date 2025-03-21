@@ -5,7 +5,7 @@ description: Get SOL balance
 
 # New Way
 ```tsx
-import { createSolanaRpc } from "@solana/web3.js";
+import { createSolanaRpc } from "@solana/kit";
 
 const rpc = createSolanaRpc("https://api.devnet.solana.com");
 
@@ -16,7 +16,7 @@ console.log("balance: ", balance);
 # Old Way
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/kit";
 
 const connection = new Connection("https://api.devnet.solana.com");
 

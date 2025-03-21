@@ -8,7 +8,7 @@ description: Close a SPL token account if balance is 0
 ## New Way
 
 ```tsx 
-import { createSolanaRpc, createKeyPairSignerFromBytes, address, createTransactionMessage, pipe, setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash, appendTransactionMessageInstructions, signTransactionMessageWithSigners, getSignatureFromTransaction, sendAndConfirmTransactionFactory, createSolanaRpcSubscriptions } from "@solana/web3.js";
+import { createSolanaRpc, createKeyPairSignerFromBytes, address, createTransactionMessage, pipe, setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash, appendTransactionMessageInstructions, signTransactionMessageWithSigners, getSignatureFromTransaction, sendAndConfirmTransactionFactory, createSolanaRpcSubscriptions } from "@solana/kit";
 import { getCloseAccountInstruction } from "@solana-program/token";
 import wallet from "../wallet.json";
 
@@ -65,7 +65,7 @@ closeTokenAccount();
 ## Old Way
 
 ```tsx
-import { PublicKey, Connection, Transaction, Keypair } from "@solana/web3.js";
+import { PublicKey, Connection, Transaction, Keypair } from "@solana/kit";
 import { createCloseAccountInstruction } from "@solana/spl-token";
 import wallet from "./wallet.json";
 

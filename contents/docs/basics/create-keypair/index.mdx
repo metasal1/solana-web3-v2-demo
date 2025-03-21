@@ -6,7 +6,7 @@ description:
 ## New Way
 
 ```js
-import { generateKeyPairSigner } from "@solana/web3.js";
+import { generateKeyPairSigner } from "@solana/kit";
 
 const keypair = await generateKeyPairSigner();
 console.log("keypair: ", keypair);
@@ -17,7 +17,7 @@ console.log("public key:", keypair.address);
 ## Old Way
 
 ```js
-import { Keypair } from "@solana/web3.js";
+import { Keypair } from "@solana/kit";
 
 const keypair = Keypair.generate();
 console.log(`public key: ${keypair.publicKey.toBase58()}`);

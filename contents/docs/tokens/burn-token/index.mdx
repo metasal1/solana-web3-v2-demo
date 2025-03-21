@@ -6,7 +6,7 @@ description: Burn 1 or more SPL tokens
 ## New Way
 
 ```tsx 
-import { createSolanaRpc, createKeyPairSignerFromBytes, address, createTransactionMessage, pipe, setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash, appendTransactionMessageInstructions, signTransactionMessageWithSigners, getSignatureFromTransaction, sendAndConfirmTransactionFactory, createSolanaRpcSubscriptions } from "@solana/web3.js";
+import { createSolanaRpc, createKeyPairSignerFromBytes, address, createTransactionMessage, pipe, setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash, appendTransactionMessageInstructions, signTransactionMessageWithSigners, getSignatureFromTransaction, sendAndConfirmTransactionFactory, createSolanaRpcSubscriptions } from "@solana/kit";
 import { TOKEN_PROGRAM_ADDRESS, getBurnCheckedInstruction } from '@solana-program/token';
 import wallet from "../wallet.json";
 

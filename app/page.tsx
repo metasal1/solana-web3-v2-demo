@@ -29,11 +29,6 @@ export default function Home() {
         <TerminalSquareIcon className="w-5 h-5 mr-1 mt-0.5" />
         {"npm install @solana/kit"}
       </span>
-      <span className="flex flex-row items-start sm:gap-2 gap-0.5 text-muted-foreground text-md mt-7 -mb-12 max-[800px]:mb-12 font-code text-base font-medium">
-        or
-        <TerminalSquareIcon className="w-5 h-5 mr-1 mt-0.5" />
-        {"npm install @solana/web3.js@2"}
-      </span>
     </div>
 
   );
