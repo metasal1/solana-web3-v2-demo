@@ -112,4 +112,19 @@ main();
 
 V2 Example provided by https://github.com/g00dv1n/fetchTokenMintAndMetadata-example
 
-# Version 1
+## Old Way
+
+```tsx
+import { Connection, PublicKey } from "@solana/web3.js";
+import { Metadata } from "@metaplex-foundation/mpl-token-metadata";
+
+const connection = new Connection("https://api.mainnet-beta.solana.com");
+
+(async () => {
+  let mintPubkey = new PublicKey("9MwGzSyuQRqmBHqmYwE6wbP3vzRBj4WWiYxWns3rkR7A");
+  let tokenmetaPubkey = await Metadata.getPDA(mintPubkey);
+
+  const tokenmeta = await Metadata.load(connection, tokenmetaPubkey);
+  console.log(tokenmeta);
+})();
+```
