@@ -168,6 +168,25 @@ export const ROUTES: EachRoute[] = [
     ],
   },
   {
+    title: "Token Extensions",
+    href: "/token-extensions",
+    items: [
+      { title: "Confidential Transfers", href: "/confidential-transfers" },
+      { title: "Transfer Fees", href: "/transfer-fees" },
+      { title: "Transfer Hooks", href: "/transfer-hooks" },
+      { title: "Non-Transferable Tokens", href: "/non-transferable-tokens" },
+      { title: "Interest-Bearing Tokens", href: "/interest-bearing-tokens" },
+      { title: "Metadata Pointer", href: "/metadata-pointer" },
+      { title: "Metadata", href: "/metadata" },
+      { title: "Group Pointer", href: "/group-pointer" },
+      { title: "Group Member Pointer", href: "/group-member-pointer" },
+      { title: "Permanent Delegate", href: "/permanent-delegate" },
+      { title: "Default Account State", href: "/default-account-state" },
+      { title: "Immutable Ownership", href: "/immutable-ownership" },
+      { title: "Mint Close Authority", href: "/mint-close-authority" },
+    ],
+  },
+  {
     title: "Stake",
     href: "/stake",
     items: [

@@ -1,0 +1,31 @@
+---
+title: Token Extensions
+description: Extend the capability of Solana Tokens by using Token Extensions aka Token 2022 and Supa Tokens
+---
+
+1. [Confidential Transfers](/docs/token-extensions/confidential-transfers)
+> Hides transfer amounts while keeping the blockchain auditable, using zero-knowledge proofs for privacy. Ideal for use cases like payroll or B2B payments. Fully available since the release of Agave validator client version 2.0 in late 2024.
+2. [Transfer Fees]
+> Allows a percentage of each token transfer to be collected as a fee, paid in the token itself, and sent to a designated account. Useful for revenue models or royalties.
+3. [Transfer Hooks]
+> Enables custom logic to be executed during token transfers by invoking a separate program. Applications include enforcing royalties or triggering specific actions. Note: Currently incompatible with confidential transfers, though a fix is in development.
+4. [Non-Transferable Tokens]
+> Prevents tokens from being transferred, making them "soulbound" to a wallet. Useful for credentials, badges, or pre-order tokens. Owners can still burn them but cannot send them.
+5. [Interest-Bearing Tokens]
+> Tokens accrue or lose value over time based on a set interest rate, compounded continuously. This is a UI calculation only—no new tokens are minted. Suitable for simulating savings accounts or loans.
+6. Metadata Pointer
+> Specifies an address where metadata for the token is stored, streamlining metadata management without requiring a separate program like Metaplex.
+7. [Metadata]
+> Embeds customizable key-value pairs directly in the mint account, enabling native metadata storage for use cases like gaming or asset tracking.
+8. [Group Pointer]
+> Points to an address defining a group for the token, facilitating token grouping for collections or related assets.
+9. [Group Member Pointer]
+> Indicates membership in a group by pointing to an address with group details, often used for NFTs in collections.
+10. [Permanent Delegate]
+> Grants an authority unlimited delegation rights over all tokens of the mint, allowing them to transfer or burn tokens at will. Used for regulatory compliance (e.g., clawbacks by stablecoin issuers like Paxos).
+11. [Default Account State]
+> Sets a default state (e.g., frozen) for newly created token accounts, useful for compliance or controlled distribution.
+12. [Immutable Ownership]
+> Prevents the mint’s ownership from being reassigned, locking it to the initial owner for security.
+13. [Mint Close Authority]
+> Allows the mint account to be closed by a specified authority, reclaiming SOL, but only if no tokens have been minted beyond the initial supply.
