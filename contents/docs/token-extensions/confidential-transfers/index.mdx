@@ -36,7 +36,7 @@ spl-token apply-pending-balance <mint_pubkey>
 ```
 7. Transfer to destination
 ```bash
-spl-token transfer <mint_pubkey> 1 <dst_pubkey> --confidential 
+spl-token transfer <mint_pubkey> 1 <dest_pubkey> --confidential 
 ```
 8. Apply to destination account
 ```bash
@@ -44,5 +44,5 @@ spl-token apply-pending-balance --address <destination_pubkey>
 ```
 9. Withdraw at destination 
 ```bash
-spl-token withdraw-confidential-tokens "$mint_pubkey" 1 --address <destination_pubkey>
+spl-token withdraw-confidential-tokens <mint_pubkey> 1 --address <dest_pubkey>
 ```
