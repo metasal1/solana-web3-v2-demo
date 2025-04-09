@@ -3,4 +3,47 @@ title: Confidential Transfers
 description: Transfers tokens to destination without disclosing the amount
 ---
 
-Coming Soon!
+## CLI
+
+There is 7 extra steps involved when dealing with Confidential Transfers using Solana Token Extensions
+
+
+1. Create token
+```bash
+spl-token --program-2022 create-token --enable-confidential-transfers auto --decimals 0
+```
+2. Create sender account
+```bash
+spl-token create-account <mint_pubkey>
+```
+
+>Note:- The destination account will need to create their own account to be able receive
+
+3. Enable Confidential Transfers for the account
+```bash
+spl-token configure-confidential-transfer-account <mint_pubkey>
+```
+4. Mint tokens
+```bash
+spl-token mint <mint_pubkey> 1
+```
+5. Deposit
+```bash
+spl-token deposit-confidential-tokens <mint_pubkey> 1
+```
+6. Apply on sender account
+```bash
+spl-token apply-pending-balance <mint_pubkey>
+```
+7. Transfer to destination
+```bash
+spl-token transfer <mint_pubkey> 1 <dst_pubkey> --confidential 
+```
+8. Apply to destination account
+```bash
+spl-token apply-pending-balance --address <destination_pubkey>
+```
+9. Withdraw at destination 
+```bash
+spl-token withdraw-confidential-tokens "$mint_pubkey" 1 --address <destination_pubkey>
+```
