@@ -3,6 +3,50 @@ title: Confidential Transfers
 description: Transfers tokens to destination without disclosing the amount
 ---
 
+## WEB3.JS
+
+```tsx
+import { Connection, Keypair, clusterApiUrl } from '@solana/web3.js';
+import { createMint, TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
+import walletSecret from './wallet.json'
+
+const wallet = Keypair.fromSecretKey(new Uint8Array(walletSecret));
+const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+
+async function createConfidentialToken() {
+    try {
+        const mintKeypair = Keypair.generate();
+
+        const mint = await createMint(
+            connection,
+            wallet,
+            wallet.publicKey,
+            null, // Freeze authority (optional)
+            0, // Decimals
+            mintKeypair,
+            { commitment: 'confirmed' },
+            TOKEN_2022_PROGRAM_ID 
+        );
+        console.log('Mint created:', mint.toBase58());
+        return mint;
+    } catch (error) {
+        console.error('Error creating token:', error);
+        throw error;
+    }
+}
+
+const main = async () => {
+    try {
+        const mint = await createConfidentialMint();
+        console.log('Token created:', mint.toBase58());
+    } catch (error) {
+        console.error('Error in main:', error);
+    }
+}
+
+main();
+
+```
 ## CLI
 
 There is 9 extra steps involved when dealing with Confidential Transfers using Solana Token Extensions
