@@ -4,58 +4,32 @@ description: Create and add metadata for a Solana SPL token
 ---
 
 ```tsx
-import { createV1, findMetadataPda, mplTokenMetadata, TokenStandard } from "@metaplex-foundation/mpl-token-metadata";
-import { mplToolbox } from "@metaplex-foundation/mpl-toolbox";
-import { percentAmount, publicKey, keypairIdentity } from "@metaplex-foundation/umi";
-import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import { base58 } from "@metaplex-foundation/umi/serializers";
-
+import { createSignerFromKeypair, generateSigner, signerIdentity } from "@metaplex-foundation/umi";
+import { createUmi } from '@metaplex-foundation/umi-bundle-defaults'
+import { base58 } from '@metaplex-foundation/umi/serializers';
 import walletSecret from './wallet.json' assert { type: "json" };
-const secretKey = new Uint8Array(walletSecret);
+import { create } from '@metaplex-foundation/mpl-core';
 
-const umi = createUmi("https://api.devnet.solana.com")
-    .use(mplTokenMetadata())
-    .use(mplToolbox());
+const umi = createUmi("https://api.devnet.solana.com", "confirmed");
+let keypair = umi.eddsa.createKeypairFromSecretKey(new Uint8Array(walletSecret));
+const signer = createSignerFromKeypair(umi, keypair);
 
-const keypair = umi.eddsa.createKeypairFromSecretKey(secretKey);
-umi.use(keypairIdentity(keypair));
+umi.use(signerIdentity(signer))
 
-const tokenMetadata = {
-    name: "Supa Token",
-    symbol: "SUPA",
-    uri: "https://api.supapump.fun/a78a3ff1-f7d6-43f0-8cff-b8993e7ec2f1",
-};
+const tokenAddress = generateSigner(umi); // token address
+const owner = generateSigner(umi);
 
-const mint = publicKey("FE1SNALhVFzk7AG3W7CfbdLyU6RumPkGFte7z4HXUGbG");
-
-async function main() {
-    try {
-        const metadataAccountAddress = await findMetadataPda(umi, {
-            mint: mint,
-        });
-
-        console.log("Metadata Account PDA:", metadataAccountAddress.toString());
-
-        const tx = await createV1(umi, {
-            mint,
-            authority: umi.identity,
-            payer: umi.identity,
-            updateAuthority: umi.identity,
-            name: tokenMetadata.name,
-            symbol: tokenMetadata.symbol,
-            uri: tokenMetadata.uri,
-            sellerFeeBasisPoints: percentAmount(5.5), // 5.5%
-            tokenStandard: TokenStandard.Fungible,
-        }).sendAndConfirm(umi);
-
-        const txSig = base58.deserialize(tx.signature)[0];
-        console.log(`Transaction successful! Signature: ${txSig}`);
-    } catch (error) {
-        console.error("Error adding metadata:", error);
-    }
+const createTokenMetadata = async () => {
+    const tx = await create(umi, {
+        name: 'Test Token',
+        uri: 'https://example.com/token.json',
+        asset: tokenAddress,
+        owner: owner.publicKey, // optional, will default to payer
+    }).sendAndConfirm(umi);
+    const txSig = base58.deserialize(tx.signature)[0];
+    console.log(`Transaction: ${txSig}`);
 }
 
-main();
-```
+createTokenMetadata();
 
-These instructions are adapted from Metaplex: https://developers.metaplex.com/guides/javascript/how-to-add-metadata-to-spl-tokens
+```
