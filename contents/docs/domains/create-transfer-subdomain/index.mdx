@@ -6,7 +6,7 @@ description: Scripts to create and transfer Solana / Bonfida Subdomains
 ## Old Way
 
 ```tsx
-import { Connection, Keypair, Transaction, sendAndConfirmTransaction, PublicKey, TransactionInstruction } from '@solana/web3.js';
+import { Connection, Keypair, Transaction, sendAndConfirmTransaction, PublicKey, TransactionInstruction } from '@solana/kit';
 import { createSubdomain, transferSubdomain } from '@bonfida/spl-name-service';
 import fs from 'fs';
 import dotenv from 'dotenv';
