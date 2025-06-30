@@ -8,7 +8,7 @@ description: Create a Solana SPL token
 ```tsx 
 import { getCreateAccountInstruction } from "@solana-program/system";
 import { getInitializeMintInstruction, getMintSize, TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
-import { createSolanaRpc, createSolanaRpcSubscriptions, generateKeyPairSigner, sendAndConfirmTransactionFactory, pipe, createTransactionMessage, setTransactionMessageLifetimeUsingBlockhash, signTransactionMessageWithSigners, getSignatureFromTransaction, setTransactionMessageFeePayerSigner, appendTransactionMessageInstructions, createKeyPairSignerFromBytes } from "@solana/web3.js";
+import { createSolanaRpc, createSolanaRpcSubscriptions, generateKeyPairSigner, sendAndConfirmTransactionFactory, pipe, createTransactionMessage, setTransactionMessageLifetimeUsingBlockhash, signTransactionMessageWithSigners, getSignatureFromTransaction, setTransactionMessageFeePayerSigner, appendTransactionMessageInstructions, createKeyPairSignerFromBytes } from "@solana/kit";
 
 import walletSecret from '../wallet.json';
 
@@ -69,7 +69,7 @@ main();
 # Old Way
 
 ```tsx
-import { Connection, Keypair } from '@solana/web3.js';
+import { Connection, Keypair } from '@solana/kit';
 import { createMint } from '@solana/spl-token';
 import walletSecret from './wallet.json' assert { type: "json" };
 

@@ -5,7 +5,7 @@ description: Get information about a specific Solana program
 
 ## New Way
 ```tsx
-import { address, createSolanaRpc } from "@solana/web3.js";
+import { address, createSolanaRpc } from "@solana/kit";
 
 const rpc = createSolanaRpc('http://localhost:8899');
 
@@ -21,7 +21,7 @@ getProgramInfo();
 ```
 ## Old Way
 ```tsx
-import { Connection, PublicKey } from '@solana/web3.js';
+import { Connection, PublicKey } from '@solana/kit';
 
 const PROGRAM_ID = 'Qi4ioHyQKMx7LMFxDAtVz9BJAaofvSFZWSkixBwyWDD';
 
