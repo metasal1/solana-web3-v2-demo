@@ -34,4 +34,17 @@ Create token and give minting authority to some other wallet
 spl-token create-token --mint-authority MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1
 ```
 
+Create token with metadata 
 
+Please note :- Metadata can only be enabled for Token-22 using the spl-token CLI
+
+Example
+Name = Supa Labs
+Symbol = SUPA
+URI = https://static.supa.ag/metadata.json
+
+```
+spl-token create-token --enable-metadata 
+
+spl-token initialize-metadata <mint_address_from_previous_command> NAME SYMBOL URI
+```
