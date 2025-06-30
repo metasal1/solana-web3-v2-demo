@@ -3,15 +3,35 @@ title: Create Token
 description: 
 ---
 
+Minimum commmand
 
 ```bash
 spl-token create-token
 ```
 
-or if you want a custom vanity address
+Create token with a custom address
 
 ```bash
 solana-keygen grind --starts-with xxx:1
 spl-token create-token xxx.json
 ```
+
+Create token and specify decimals
+
+```
+spl-token create-token --decimals 18
+```
+
+Create token using Token-22 / Token Extensions
+
+```
+spl-token create-token --program-2022
+```
+
+Create token and give minting authority to some other wallet
+
+```
+spl-token create-token --mint-authority MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1
+```
+
 
