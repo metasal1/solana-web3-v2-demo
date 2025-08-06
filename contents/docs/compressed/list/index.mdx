@@ -1,0 +1,28 @@
+---
+title: List Compressed Tokens
+description:
+---
+
+<Note>
+You must use an RPC that supports Light Protocol such as Helius
+</Note>
+
+```tsx
+import { Rpc, createRpc } from "@lightprotocol/stateless.js";
+import { PublicKey } from "@solana/web3.js";
+import dotenv from "dotenv";
+dotenv.config();
+
+const RPC_ENDPOINT = process.env.RPC_ENDPOINT;
+const connection: Rpc = createRpc(RPC_ENDPOINT);
+
+const getTokenAccounts = async () => {
+    const compressedTokenAccounts = await connection.getCompressedTokenAccountsByOwner(new PublicKey("ER28Gm1cLWVCTrtWcEGudcQFpLHKDCR9uAEYaZpNNtrj"));
+    compressedTokenAccounts.items.forEach(item => {
+        console.log(item.parsed.mint.toString(), item.parsed.amount.toString());
+    });
+}
+
+getTokenAccounts();
+
+```
