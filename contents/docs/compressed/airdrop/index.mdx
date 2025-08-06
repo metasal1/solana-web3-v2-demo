@@ -1,0 +1,107 @@
+---
+title: Airdrop Compressed Tokens
+description:
+---
+
+<Note>
+You must use an RPC that supports Light Protocol such as Helius
+</Note>
+
+```tsx
+import { Keypair, PublicKey, ComputeBudgetProgram } from "@solana/web3.js";
+import { CompressedTokenProgram, getTokenPoolInfos, selectTokenPoolInfo } from "@lightprotocol/compressed-token";
+import { bn, buildAndSignTx, calculateComputeUnitPrice, createRpc, dedupeSigner, Rpc, selectStateTreeInfo, sendAndConfirmTx } from "@lightprotocol/stateless.js";
+import { getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
+import dotenv from "dotenv";
+import bs58 from "bs58";
+dotenv.config();
+
+const RPC_ENDPOINT = process.env.RPC_ENDPOINT;
+const MINT_ADDRESS = new PublicKey(process.env.MINT_ADDRESS!);
+const PAYER_KEYPAIR = Keypair.fromSecretKey(
+    bs58.decode(process.env.PAYER_KEYPAIR!)
+);
+
+const airdropTokens = async () => {
+    const connection: Rpc = createRpc(RPC_ENDPOINT);
+    const mintAddress = MINT_ADDRESS;
+    const payer = PAYER_KEYPAIR;
+    const owner = payer;
+
+    /// Select a new tree for each transaction.
+    const activeStateTrees = await connection.getStateTreeInfos();
+    const treeInfo = selectStateTreeInfo(activeStateTrees);
+
+    /// Select a tokenpool info
+    const infos = await getTokenPoolInfos(connection, mintAddress);
+    const info = selectTokenPoolInfo(infos);
+
+    const sourceTokenAccount = await getOrCreateAssociatedTokenAccount(
+        connection,
+        payer,
+        mintAddress,
+        payer.publicKey
+    );
+
+    // // generate 10 addresses
+    // const addys = Array.from({ length: 10 }, () => {
+    //     const keypair = Keypair.generate();
+    //     return keypair.publicKey.toBase58();
+    // });
+
+
+    // Airdrop to example recipient
+    // 1 recipient = 120_000 CU
+    // 5 recipients = 170_000 CU
+
+    const airDropAddresses = ["FrRyCkdjwdcGqk2DGkuivkj2XP1RxzuZaDDvMLejoYEU",
+        "FUCww3SgAmqiP4CswfgY2r2Nsf6PPzARrXraEnGCn4Ln",
+        "GaxVqiQyJKQDRu6H4pfy9V6Xq19pHGr6HQKDQDv911Y4",
+        "HMWjaP76iq5izGBSSbj24w73RuDjk8DDqrrQFNW1pik6",
+        "GBG3sHLdrZ3bMHH9m6hQWNRgcUk1TR1GAJuBQKDirK7s",
+        "HmxFDNWwoK7dSBCEJCxZ8sBDVZQSvMrJWQN2n8dX7A7o",
+        "K1xwRg3v9VBhdZztuZAHkwyabyU7Aw223MF3gEHfbJu",
+        "k6srnidubpAEsFn3RoQ6hwP36QzXugN4rGT2V6hcGdU",
+        "LvWtTA3tDip1icurv5xdLMm5rFo7hhALxeVCgww7kdc",
+        "MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1",
+        "oQVkFBxgoWrwiRTrP45rVCzCEAeHw5ou9PXk5SMs6PZ",
+        "XxrnkCw4pKEGVhYZPCbmoYHjYDSPaC9a3c2RSWcxpCj",
+    ].map(
+        (address) => new PublicKey(address)
+    );
+
+    const amount = bn(50_000_000);
+
+    const instructions = [];
+    instructions.push(
+        ComputeBudgetProgram.setComputeUnitLimit({ units: 120_000 }),
+        ComputeBudgetProgram.setComputeUnitPrice({
+            // Replace this with a dynamic priority_fee based on network conditions.
+            microLamports: calculateComputeUnitPrice(20_000, 120_000),
+        })
+    );
+
+    const compressInstruction = await CompressedTokenProgram.compress({
+        payer: payer.publicKey,
+        owner: owner.publicKey,
+        source: sourceTokenAccount.address,
+        toAddress: airDropAddresses,
+        amount: airDropAddresses.map(() => amount),
+        mint: mintAddress,
+        tokenPoolInfo: info,
+        outputStateTreeInfo: treeInfo,
+    });
+    instructions.push(compressInstruction);
+
+    const additionalSigners = dedupeSigner(payer, [owner]);
+    const { blockhash } = await connection.getLatestBlockhash();
+
+    const tx = buildAndSignTx(instructions, payer, blockhash, additionalSigners);
+
+    const txId = await sendAndConfirmTx(connection, tx);
+    console.log(`txId: ${txId}`);
+}
+
+airdropTokens();
+
+```

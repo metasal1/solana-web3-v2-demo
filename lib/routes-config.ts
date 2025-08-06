@@ -185,6 +185,15 @@ export const ROUTES: EachRoute[] = [
       { title: "Immutable Ownership", href: "/immutable-ownership" },
       { title: "Mint Close Authority", href: "/mint-close-authority" },
     ],
+  }, {
+    title: "Tokens - Compressed",
+    href: "/compressed",
+    items: [
+      { title: "Installation", href: "/installation" },
+      { title: "Register", href: "/register" },
+      { title: "Airdrop", href: "/airdrop" },
+      { title: "Decompress", href: "/decompress" },
+    ],
   },
   {
     title: "Stake",

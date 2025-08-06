@@ -1,0 +1,88 @@
+---
+title: Decompress Compressed Tokens
+description:
+---
+
+<Note>
+You must use an RPC that supports Light Protocol such as Helius
+</Note>
+
+```tsx
+import { bn, buildAndSignTx, sendAndConfirmTx, dedupeSigner, Rpc, createRpc } from "@lightprotocol/stateless.js";
+import { ComputeBudgetProgram, Keypair, PublicKey } from "@solana/web3.js";
+import { CompressedTokenProgram, getTokenPoolInfos, selectMinCompressedTokenAccountsForTransfer, selectTokenPoolInfosForDecompression, } from "@lightprotocol/compressed-token";
+import { getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
+import bs58 from "bs58";
+import dotenv from "dotenv";
+dotenv.config();
+
+// Set these values in your .env file
+const RPC_ENDPOINT = process.env.RPC_ENDPOINT;
+const mint = new PublicKey(process.env.MINT_ADDRESS!);
+const payer = Keypair.fromSecretKey(bs58.decode(process.env.GET_PAYER_KEYPAIR!));
+
+const owner = payer;
+const amount = 1e5;
+const connection: Rpc = createRpc(RPC_ENDPOINT);
+
+(async () => {
+    // 1. Create an associated token account for the user if it doesn't exist
+    const ata = await getOrCreateAssociatedTokenAccount(
+        connection,
+        payer,
+        mint,
+        payer.publicKey
+    );
+
+    // 2. Fetch compressed token accounts
+    const compressedTokenAccounts =
+        await connection.getCompressedTokenAccountsByOwner(owner.publicKey, {
+            mint,
+        });
+    console.log('compressedTokenAccounts', compressedTokenAccounts);
+
+    // 3. Select
+    const [inputAccounts] = selectMinCompressedTokenAccountsForTransfer(
+        compressedTokenAccounts.items,
+        bn(amount)
+    );
+
+    // 4. Fetch validity proof
+    const proof = await connection.getValidityProof(
+        inputAccounts.map((account) => account.compressedAccount.hash)
+    );
+
+    // 5. Fetch token pool infos
+    const tokenPoolInfos = await getTokenPoolInfos(connection, mint);
+    console.log('tokenPoolInfos', tokenPoolInfos);
+
+    // 6. Select
+    const selectedTokenPoolInfos = selectTokenPoolInfosForDecompression(
+        tokenPoolInfos,
+        amount
+    );
+
+    // 7. Build instruction
+    const ix = await CompressedTokenProgram.decompress({
+        payer: payer.publicKey,
+        inputCompressedTokenAccounts: inputAccounts,
+        toAddress: ata.address,
+        amount,
+        tokenPoolInfos: selectedTokenPoolInfos,
+        recentInputStateRootIndices: proof.rootIndices,
+        recentValidityProof: proof.compressedProof,
+    });
+
+    // 8. Sign, send, and confirm
+    const { blockhash } = await connection.getLatestBlockhash();
+    const additionalSigners = dedupeSigner(payer, [owner]);
+    const signedTx = buildAndSignTx(
+        [ComputeBudgetProgram.setComputeUnitLimit({ units: 300_000 }), ix],
+        payer,
+        blockhash,
+        additionalSigners
+    );
+    return await sendAndConfirmTx(connection, signedTx);
+})();
+
+```

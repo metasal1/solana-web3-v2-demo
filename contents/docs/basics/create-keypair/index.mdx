@@ -5,7 +5,7 @@ description:
 
 ## New Way
 
-```js
+```tsx 
 import { generateKeyPairSigner } from "@solana/kit";
 
 const keypair = await generateKeyPairSigner();
@@ -16,7 +16,7 @@ console.log("public key:", keypair.address);
 
 ## Old Way
 
-```js
+```tsx
 import { Keypair } from "@solana/kit";
 
 const keypair = Keypair.generate();

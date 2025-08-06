@@ -1,0 +1,31 @@
+---
+title: Register Tokens
+description:
+---
+
+<Note>
+You must use an RPC that supports Light Protocol such as Helius
+</Note>
+
+```tsx
+import { Keypair, PublicKey } from '@solana/web3.js';
+import { createRpc } from '@lightprotocol/stateless.js';
+import { createTokenPool } from '@lightprotocol/compressed-token';
+import bs58 from "bs58";
+import dotenv from "dotenv";
+dotenv.config();
+
+const RPC_ENDPOINT = process.env.RPC_ENDPOINT!;
+const PAYER = Keypair.fromSecretKey(bs58.decode(process.env.PAYER_KEYPAIR!));
+
+const connection = createRpc(RPC_ENDPOINT);
+
+const registerMint = async () => {
+    const mint = new PublicKey(process.env.MINT_ADDRESS!);
+    const poolTxId = await createTokenPool(connection, PAYER, mint);
+    console.log(`createTokenPool success: ${poolTxId}`);
+}
+
+registerMint();
+```
+
