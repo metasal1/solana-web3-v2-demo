@@ -191,6 +191,7 @@ export const ROUTES: EachRoute[] = [
     items: [
       { title: "Installation", href: "/installation" },
       { title: "Register", href: "/register" },
+      { title: "Transfer", href: "/transfer" },
       { title: "Airdrop", href: "/airdrop" },
       { title: "List", href: "/list" },
       { title: "Decompress", href: "/decompress" },

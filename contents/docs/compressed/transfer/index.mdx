@@ -1,0 +1,41 @@
+---
+title: Transfer Compressed Tokens
+description: Send Compressed tokens to another wallet
+---
+
+<Note>
+You must use an RPC that supports Light Protocol such as Helius
+</Note>
+
+```tsx
+import { Rpc, createRpc } from "@lightprotocol/stateless.js";
+import { transfer } from "@lightprotocol/compressed-token";
+import { Keypair, PublicKey } from "@solana/web3.js";
+import dotenv from "dotenv";
+import bs58 from "bs58";
+dotenv.config();
+
+const payer = Keypair.fromSecretKey(bs58.decode(process.env.GET_PAYER_KEYPAIR!));
+const tokenRecipient = new PublicKey('MTSLZDJppGh6xUcnrSSbSQE5fgbvCtQ496MqgQTv8c1');
+const mint = new PublicKey(process.env.MINT_ADDRESS!);
+const connection: Rpc = createRpc(process.env.RPC_ENDPOINT!);
+const AMOUNT = 1;
+
+const transferCompressedToken = async () => {
+
+    const transferTxId = await transfer(
+        connection,
+        payer,
+        mint,
+        AMOUNT,
+        payer,
+        tokenRecipient
+    );
+
+    console.log(`Transfer of ${AMOUNT} ${mint} to ${tokenRecipient} was a success!`);
+    console.log(`txId: ${transferTxId}`);
+};
+
+transferCompressedToken();
+
+```
