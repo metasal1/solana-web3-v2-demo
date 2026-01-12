@@ -7,41 +7,39 @@ description: Withdraw USDC or USDT privately from Privacy Cash
 
 Withdraw USDC or USDT privately from the Privacy Cash pool using zero-knowledge proofs.
 
-### Example with @solana/kit
+### Example
 
 ```typescript
+import { PublicKey } from '@solana/web3.js';
 import { PrivacyCash } from 'privacycash';
-import { createSolanaRpc, createSolanaRpcSubscriptions, address } from '@solana/kit';
 
-const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
-const rpcSubscriptions = createSolanaRpcSubscriptions('wss://api.mainnet-beta.solana.com');
+const client = new PrivacyCash({
+    RPC_url: 'YOUR_SOLANA_MAINNET_RPC_URL',
+    owner: 'YOUR_PRIVATE_KEY'
+});
 
 // USDC mint address
-const USDC_MINT = address('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
+const mintAddress = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
 
-const withdrawUsdc = async () => {
-    // Check SPL balance first
-    const balance = await PrivacyCash.getPrivateBalanceSpl({
-        rpc,
-        note: 'your-deposit-note-here',
-        mint: USDC_MINT,
+async function withdrawUsdc() {
+    const recipientAddress = 'RECIPIENT_ADDRESS';
+
+    // Check balance first
+    const privateBalance = await client.getPrivateBalanceSpl(mintAddress);
+    console.log('USDC balance:', privateBalance.amount);
+
+    // Withdraw 2 USDC
+    const withdrawRes = await client.withdrawSPL({
+        mintAddress,
+        amount: 2,
+        recipientAddress
     });
+    console.log(withdrawRes);
 
-    console.log('Private USDC balance:', balance);
-
-    // Withdraw to any address
-    const recipient = address('recipient-address-here');
-
-    const result = await PrivacyCash.withdrawSPL({
-        rpc,
-        rpcSubscriptions,
-        note: 'your-deposit-note-here',
-        mint: USDC_MINT,
-        recipient,
-    });
-
-    console.log('SPL withdrawal successful:', result);
-};
+    // Check balance after withdrawal
+    const balanceAfter = await client.getPrivateBalanceSpl(mintAddress);
+    console.log('USDC balance after withdraw:', balanceAfter.amount);
+}
 
 withdrawUsdc();
 ```
@@ -50,9 +48,9 @@ withdrawUsdc();
 
 | Method | Description |
 |----------|-------------|
-| `PrivacyCash.depositSPL()` | Deposit USDC/USDT |
-| `PrivacyCash.withdrawSPL()` | Withdraw USDC/USDT |
-| `PrivacyCash.getPrivateBalanceSpl()` | Check SPL balance |
+| `client.depositSPL()` | Deposit USDC/USDT |
+| `client.withdrawSPL()` | Withdraw USDC/USDT |
+| `client.getPrivateBalanceSpl()` | Check SPL balance |
 
 ### Fees
 

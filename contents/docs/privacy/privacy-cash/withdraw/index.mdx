@@ -7,39 +7,40 @@ description: Withdraw SOL privately from Privacy Cash
 
 Withdraw SOL from the Privacy Cash privacy pool to any address. The withdrawal uses zero-knowledge proofs to break the link between deposit and withdrawal addresses.
 
-### Example with @solana/kit
+### Example
 
 ```typescript
 import { PrivacyCash } from 'privacycash';
-import { createSolanaRpc, createSolanaRpcSubscriptions, address } from '@solana/kit';
 
-const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
-const rpcSubscriptions = createSolanaRpcSubscriptions('wss://api.mainnet-beta.solana.com');
+const client = new PrivacyCash({
+    RPC_url: 'YOUR_SOLANA_MAINNET_RPC_URL',
+    owner: 'YOUR_PRIVATE_KEY'
+});
 
-const withdrawSol = async () => {
-    const recipient = address('recipient-address-here');
+async function withdrawSol() {
+    const recipientAddress = 'RECIPIENT_ADDRESS';
 
-    // Withdraw to any address
-    const result = await PrivacyCash.withdraw({
-        rpc,
-        rpcSubscriptions,
-        note: 'your-deposit-note-here', // The note from your deposit
-        recipient,
+    // Withdraw 0.01 SOL
+    const withdrawRes = await client.withdraw({
+        lamports: 0.01 * 1_000_000_000,
+        recipientAddress
     });
+    console.log(withdrawRes);
 
-    console.log('Withdrawal successful:', result);
-};
+    // Check balance after withdrawal
+    const privateBalance = await client.getPrivateBalance();
+    console.log('Balance after withdraw:', privateBalance.lamports / 1_000_000_000, 'SOL');
+}
 
 withdrawSol();
 ```
 
 ### How it Works
 
-1. Provide your deposit note (proof of deposit)
-2. A zero-knowledge proof is generated
-3. The proof verifies you have a valid deposit without revealing which one
-4. SOL is sent to your specified recipient address
-5. No on-chain link exists between deposit and withdrawal
+1. A zero-knowledge proof is generated
+2. The proof verifies you have a valid deposit without revealing which one
+3. SOL is sent to your specified recipient address
+4. No on-chain link exists between deposit and withdrawal
 
 ### Fees
 

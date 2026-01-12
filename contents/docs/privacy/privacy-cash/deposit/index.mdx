@@ -5,31 +5,29 @@ description: Deposit SOL into Privacy Cash
 
 ## Deposit SOL
 
-Deposit SOL into the Privacy Cash privacy pool. Your deposit generates a commitment that is added to a Merkle tree, enabling private withdrawals later.
+Deposit SOL into the Privacy Cash privacy pool.
 
-### Example with @solana/kit
+### Example
 
 ```typescript
 import { PrivacyCash } from 'privacycash';
-import { createSolanaRpc, createSolanaRpcSubscriptions, createKeyPairSignerFromBytes, lamports } from '@solana/kit';
-import wallet from './wallet.json';
 
-const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
-const rpcSubscriptions = createSolanaRpcSubscriptions('wss://api.mainnet-beta.solana.com');
+const client = new PrivacyCash({
+    RPC_url: 'YOUR_SOLANA_MAINNET_RPC_URL',
+    owner: 'YOUR_PRIVATE_KEY'
+});
 
-const depositSol = async () => {
-    const keypairSigner = await createKeyPairSignerFromBytes(new Uint8Array(wallet));
-
-    // Deposit SOL into the privacy pool
-    const result = await PrivacyCash.deposit({
-        rpc,
-        payer: keypairSigner,
-        amount: lamports(1_000_000_000n), // 1 SOL in lamports
+async function depositSol() {
+    // Deposit 0.01 SOL
+    const depositRes = await client.deposit({
+        lamports: 0.01 * 1_000_000_000
     });
+    console.log(depositRes);
 
-    console.log('Deposit successful:', result);
-    console.log('Save your note securely:', result.note);
-};
+    // Check balance after deposit
+    const privateBalance = await client.getPrivateBalance();
+    console.log('Balance after deposit:', privateBalance.lamports / 1_000_000_000, 'SOL');
+}
 
 depositSol();
 ```
@@ -39,10 +37,9 @@ depositSol();
 1. You deposit SOL into a shielded pool
 2. A cryptographic commitment is generated
 3. The commitment is added to a Merkle tree on-chain
-4. You receive a note/secret that proves ownership
-5. This note allows you to withdraw to any address without linking transactions
+4. You can later withdraw to any address without linking transactions
 
 ### Important
 
-- Save your deposit note securely - it's required for withdrawal
 - Deposits are irreversible once confirmed
+- Historical UTXOs are cached locally for faster performance
