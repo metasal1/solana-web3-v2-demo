@@ -10,14 +10,14 @@ Query your private SOL balance in the Privacy Cash pool.
 ### Example with @solana/kit
 
 ```typescript
-import { getPrivateBalance } from 'privacycash';
+import { PrivacyCash } from 'privacycash';
 import { createSolanaRpc } from '@solana/kit';
 
 const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
 
 const checkBalance = async () => {
     // Check private balance using your note
-    const balance = await getPrivateBalance({
+    const balance = await PrivacyCash.getPrivateBalance({
         rpc,
         note: 'your-deposit-note-here',
     });

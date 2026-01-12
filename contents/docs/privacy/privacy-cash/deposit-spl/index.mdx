@@ -15,7 +15,7 @@ Deposit USDC or USDT into the Privacy Cash privacy pool for private token transa
 ### Example with @solana/kit
 
 ```typescript
-import { depositSPL } from 'privacycash';
+import { PrivacyCash } from 'privacycash';
 import { createSolanaRpc, createSolanaRpcSubscriptions, createKeyPairSignerFromBytes, address } from '@solana/kit';
 import wallet from './wallet.json';
 
@@ -29,7 +29,7 @@ const depositUsdc = async () => {
     const keypairSigner = await createKeyPairSignerFromBytes(new Uint8Array(wallet));
 
     // Deposit USDC into the privacy pool
-    const result = await depositSPL({
+    const result = await PrivacyCash.depositSPL({
         rpc,
         rpcSubscriptions,
         payer: keypairSigner,

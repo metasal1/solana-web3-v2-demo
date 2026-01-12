@@ -10,7 +10,7 @@ Withdraw USDC or USDT privately from the Privacy Cash pool using zero-knowledge 
 ### Example with @solana/kit
 
 ```typescript
-import { withdrawSPL, getPrivateBalanceSpl } from 'privacycash';
+import { PrivacyCash } from 'privacycash';
 import { createSolanaRpc, createSolanaRpcSubscriptions, address } from '@solana/kit';
 
 const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
@@ -21,7 +21,7 @@ const USDC_MINT = address('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
 
 const withdrawUsdc = async () => {
     // Check SPL balance first
-    const balance = await getPrivateBalanceSpl({
+    const balance = await PrivacyCash.getPrivateBalanceSpl({
         rpc,
         note: 'your-deposit-note-here',
         mint: USDC_MINT,
@@ -32,7 +32,7 @@ const withdrawUsdc = async () => {
     // Withdraw to any address
     const recipient = address('recipient-address-here');
 
-    const result = await withdrawSPL({
+    const result = await PrivacyCash.withdrawSPL({
         rpc,
         rpcSubscriptions,
         note: 'your-deposit-note-here',
@@ -48,11 +48,11 @@ withdrawUsdc();
 
 ### SPL APIs
 
-| Function | Description |
+| Method | Description |
 |----------|-------------|
-| `depositSPL()` | Deposit USDC/USDT |
-| `withdrawSPL()` | Withdraw USDC/USDT |
-| `getPrivateBalanceSpl()` | Check SPL balance |
+| `PrivacyCash.depositSPL()` | Deposit USDC/USDT |
+| `PrivacyCash.withdrawSPL()` | Withdraw USDC/USDT |
+| `PrivacyCash.getPrivateBalanceSpl()` | Check SPL balance |
 
 ### Fees
 

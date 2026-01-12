@@ -10,7 +10,7 @@ Deposit SOL into the Privacy Cash privacy pool. Your deposit generates a commitm
 ### Example with @solana/kit
 
 ```typescript
-import { deposit } from 'privacycash';
+import { PrivacyCash } from 'privacycash';
 import { createSolanaRpc, createSolanaRpcSubscriptions, createKeyPairSignerFromBytes, lamports } from '@solana/kit';
 import wallet from './wallet.json';
 
@@ -21,7 +21,7 @@ const depositSol = async () => {
     const keypairSigner = await createKeyPairSignerFromBytes(new Uint8Array(wallet));
 
     // Deposit SOL into the privacy pool
-    const result = await deposit({
+    const result = await PrivacyCash.deposit({
         rpc,
         payer: keypairSigner,
         amount: lamports(1_000_000_000n), // 1 SOL in lamports

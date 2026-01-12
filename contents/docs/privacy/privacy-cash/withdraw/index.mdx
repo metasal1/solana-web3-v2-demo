@@ -10,7 +10,7 @@ Withdraw SOL from the Privacy Cash privacy pool to any address. The withdrawal u
 ### Example with @solana/kit
 
 ```typescript
-import { withdraw } from 'privacycash';
+import { PrivacyCash } from 'privacycash';
 import { createSolanaRpc, createSolanaRpcSubscriptions, address } from '@solana/kit';
 
 const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
@@ -20,7 +20,7 @@ const withdrawSol = async () => {
     const recipient = address('recipient-address-here');
 
     // Withdraw to any address
-    const result = await withdraw({
+    const result = await PrivacyCash.withdraw({
         rpc,
         rpcSubscriptions,
         note: 'your-deposit-note-here', // The note from your deposit
