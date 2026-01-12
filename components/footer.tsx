@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { CodeIcon, HeartIcon, TriangleIcon, MessageCircleIcon } from "lucide-react";
+import { CodeIcon, HeartIcon, TriangleIcon } from "lucide-react";
 
 export function Footer() {
   return (
@@ -21,14 +21,6 @@ export function Footer() {
 export function FooterButtons() {
   return (
     <>
-      <Link
-        href="https://t.me/solweb3js"
-        target="_blank"
-        className={buttonVariants({ variant: "outline", size: "sm" })}
-      >
-        <MessageCircleIcon className="h-4 w-4 mr-2 text-blue-500 fill-current" />
-        Telegram Channel
-      </Link>
       <Link
         href="https://github.com/anza-xyz/kit"
         target="_blank"
