@@ -114,6 +114,20 @@ export const ROUTES: EachRoute[] = [
   {
     title: "Privacy",
     href: "/privacy",
+    items: [
+      {
+        title: "Privacy Cash",
+        href: "/privacy-cash",
+        items: [
+          { title: "Installation", href: "/installation" },
+          { title: "Deposit SOL", href: "/deposit" },
+          { title: "Withdraw SOL", href: "/withdraw" },
+          { title: "Get Balance", href: "/balance" },
+          { title: "Deposit SPL", href: "/deposit-spl" },
+          { title: "Withdraw SPL", href: "/withdraw-spl" },
+        ],
+      },
+    ],
   },
   {
     title: "Programs",

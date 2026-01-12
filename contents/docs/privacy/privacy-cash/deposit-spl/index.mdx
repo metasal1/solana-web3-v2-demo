@@ -1,0 +1,52 @@
+---
+title: Deposit SPL
+description: Deposit USDC or USDT into Privacy Cash
+---
+
+## Deposit SPL Tokens
+
+Deposit USDC or USDT into the Privacy Cash privacy pool for private token transactions.
+
+### Supported Tokens
+
+- USDC
+- USDT
+
+### Example with @solana/kit
+
+```typescript
+import { depositSPL } from 'privacycash';
+import { createSolanaRpc, createSolanaRpcSubscriptions, createKeyPairSignerFromBytes, address } from '@solana/kit';
+import wallet from './wallet.json';
+
+const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
+const rpcSubscriptions = createSolanaRpcSubscriptions('wss://api.mainnet-beta.solana.com');
+
+// USDC mint address on mainnet
+const USDC_MINT = address('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
+
+const depositUsdc = async () => {
+    const keypairSigner = await createKeyPairSignerFromBytes(new Uint8Array(wallet));
+
+    // Deposit USDC into the privacy pool
+    const result = await depositSPL({
+        rpc,
+        rpcSubscriptions,
+        payer: keypairSigner,
+        mint: USDC_MINT,
+        amount: 100_000_000n, // 100 USDC (6 decimals)
+    });
+
+    console.log('SPL deposit successful:', result);
+    console.log('Save your note securely:', result.note);
+};
+
+depositUsdc();
+```
+
+### Token Mints
+
+| Token | Mainnet Address |
+|-------|-----------------|
+| USDC | `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v` |
+| USDT | `Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB` |

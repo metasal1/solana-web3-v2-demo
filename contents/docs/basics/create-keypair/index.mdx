@@ -17,7 +17,8 @@ console.log("public key:", keypair.address);
 ## Old Way
 
 ```tsx
-import { Keypair } from "@solana/kit";
+import { Keypair } from "@solana/web3.js";
+import bs58 from "bs58";
 
 const keypair = Keypair.generate();
 console.log(`public key: ${keypair.publicKey.toBase58()}`);

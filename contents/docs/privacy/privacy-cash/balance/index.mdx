@@ -1,0 +1,35 @@
+---
+title: Get Balance
+description: Check your private SOL balance
+---
+
+## Get Private Balance
+
+Query your private SOL balance in the Privacy Cash pool.
+
+### Example with @solana/kit
+
+```typescript
+import { getPrivateBalance } from 'privacycash';
+import { createSolanaRpc } from '@solana/kit';
+
+const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
+
+const checkBalance = async () => {
+    // Check private balance using your note
+    const balance = await getPrivateBalance({
+        rpc,
+        note: 'your-deposit-note-here',
+    });
+
+    console.log('Private balance:', balance, 'lamports');
+};
+
+checkBalance();
+```
+
+### Notes
+
+- Balance is derived from your deposit note
+- Only you can query your balance with your note
+- Keep your note secure - anyone with it can withdraw your funds

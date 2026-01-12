@@ -1,0 +1,41 @@
+---
+title: Installation
+description: Install the Privacy Cash SDK
+---
+
+## Install Privacy Cash SDK
+
+Privacy Cash SDK enables developers to deposit, withdraw, and query balances in the Privacy Cash Solana program.
+
+### Requirements
+
+- Node.js version 24 or above
+
+### Install via npm
+
+```bash
+npm install privacycash @solana/kit
+```
+
+### Basic Setup with @solana/kit
+
+```typescript
+import { deposit, withdraw, getPrivateBalance } from 'privacycash';
+import { createSolanaRpc, createKeyPairSignerFromBytes } from '@solana/kit';
+import wallet from './wallet.json';
+
+// Setup RPC connection
+const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
+
+// Load your keypair
+const keypairSigner = await createKeyPairSignerFromBytes(new Uint8Array(wallet));
+```
+
+### Resources
+
+- [Privacy Cash GitHub](https://github.com/Privacy-Cash/privacy-cash-sdk)
+- [Privacy Cash Website](https://privacycash.co/)
+
+### Fees
+
+Privacy Cash charges 0.35% + 0.006 SOL on each withdrawal.

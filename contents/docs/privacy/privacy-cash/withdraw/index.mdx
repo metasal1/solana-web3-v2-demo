@@ -1,0 +1,52 @@
+---
+title: Withdraw SOL
+description: Withdraw SOL privately from Privacy Cash
+---
+
+## Withdraw SOL
+
+Withdraw SOL from the Privacy Cash privacy pool to any address. The withdrawal uses zero-knowledge proofs to break the link between deposit and withdrawal addresses.
+
+### Example with @solana/kit
+
+```typescript
+import { withdraw } from 'privacycash';
+import { createSolanaRpc, createSolanaRpcSubscriptions, address } from '@solana/kit';
+
+const rpc = createSolanaRpc('https://api.mainnet-beta.solana.com');
+const rpcSubscriptions = createSolanaRpcSubscriptions('wss://api.mainnet-beta.solana.com');
+
+const withdrawSol = async () => {
+    const recipient = address('recipient-address-here');
+
+    // Withdraw to any address
+    const result = await withdraw({
+        rpc,
+        rpcSubscriptions,
+        note: 'your-deposit-note-here', // The note from your deposit
+        recipient,
+    });
+
+    console.log('Withdrawal successful:', result);
+};
+
+withdrawSol();
+```
+
+### How it Works
+
+1. Provide your deposit note (proof of deposit)
+2. A zero-knowledge proof is generated
+3. The proof verifies you have a valid deposit without revealing which one
+4. SOL is sent to your specified recipient address
+5. No on-chain link exists between deposit and withdrawal
+
+### Fees
+
+- 0.35% + 0.006 SOL per withdrawal
+
+### Privacy Tips
+
+- Wait some time between deposit and withdrawal
+- Withdraw to a fresh address for maximum privacy
+- Consider splitting large amounts into multiple deposits/withdrawals
