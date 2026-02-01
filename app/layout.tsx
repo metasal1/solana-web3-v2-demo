@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import { ThemeProvider } from "@/components/contexts/theme-provider";
 import { Navbar } from "@/components/navbar";
@@ -37,6 +38,11 @@ export default function RootLayout({
         className={`${GeistSans.variable} ${GeistMono.variable} font-regular antialiased`}
         suppressHydrationWarning
       >
+        <Script
+          defer
+          src="https://stats.sal.fun/script.js"
+          data-website-id="29c0179f-d11d-492b-9a93-31c473a7f2c8"
+        />
         <Analytics />
         <ThemeProvider
           attribute="class"
